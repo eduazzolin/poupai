@@ -1,6 +1,37 @@
 # poupaí
 Trabalho acadêmico com React Native - Senac 2024
-
+# Requisitos
+**O objetivo é criar um aplicativo para controle de despesas pessoais.** O usuário poderá cadastrar despesas e limites mensais, visualizar o resultado do mês e seu histórico de despesas. O aplicativo deverá ter autenticação de usuário e rotas privadas.
+### Fluxo de sessão
+- Criar conta (signup)
+  - Campos: data de nascimento, nome, email, senha.
+- Iniciar sessão (signin)
+- Encerrar sessão (signout)
+### Fluxo da Home
+- Tela de Home com:
+  - Card de feedback (economizou, gastou acima do limite, sem despesas registradas).
+  - Barra com soma das despesas mensais e limite mensal.
+  - Filtro por data (mês).
+  - Exibição de resultado do mês (imagem e texto conforme desempenho).
+### Fluxo Meus Dados
+- Exibir informações do usuário: nome, email, data de nascimento.
+- Botão para encerrar sessão (signout).
+### Fluxo de Cadastro de Despesa
+- Tela/modal para cadastrar, editar e excluir despesa.
+  - Campos: descrição, valor, mês referência.
+  - Não é permitido para meses anteriores ao corrente.
+  - Busca de despesas por mês (Histórico).
+### Fluxo de Cadastro de Limite
+- Tela/modal para cadastrar, editar e excluir limite mensal.
+  - Campos: valor, mês referência.
+  - Apenas um limite por mês.
+  - Não é permitido para meses anteriores ao corrente.
+  - Busca de limite por mês (Consulta).
+### Requisitos técnicos
+- Rotas privadas acessíveis apenas com token válido.
+- Armazenar token de autenticação no local storage.
+- Validar autenticação nas trocas de rota.
+- Validações antes de fazer requisição para o back-end.
 # endpoints
 ### /usuarios
 #### 1. login

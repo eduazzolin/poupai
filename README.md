@@ -29,7 +29,6 @@ Trabalho acadêmico com React Native - Senac 2024
 - Método: GET
 - Endpoint: /:id
 - Permissão: Privado
-
 ### /despesas
 #### 1. cadastro
 - Método: POST
@@ -67,6 +66,12 @@ Trabalho acadêmico com React Native - Senac 2024
     "usuario_id": "number"
 }
 ```
+#### 6. valor total por mês
+- Método: GET
+- Endpoint: /total?mes_ano=string?usuario_id=number
+- Permissão: Privado
+- Retorno: number
+- Exemplo de SQL: `SELECT SUM(valor) FROM despesas WHERE mes_ano = '012024' AND usuario_id = 1;` 
 ### /limites
 #### 1. cadastro
 - Método: POST

@@ -16,11 +16,22 @@ export default function Limit() {
   const [mesConsulta, setMesConsulta] = useState("")
   const [anoConsulta, setAnoConsulta] = useState("")
 
-  const [limiteConsulta, setLimiteConsulta] = useState(2592.20)
   const mesListaCadastro = MESES
   const anoListaCadastro = ["2021", "2022", "2023", "2024", "2025"]
   const mesListaConsulta = MESES
   const anoListaConsulta = ["2021", "2022", "2023", "2024", "2025"]
+
+  const limiteConsulta = {
+    id: 1,
+    valor: 1999.80
+  }
+
+  const removerLimite = (id: number) => {
+    console.log("Remover limite", id)
+  }
+  const editarLimite = (id: number) => {
+    console.log("Editar limite", id)
+  }
 
   return (
 
@@ -35,7 +46,7 @@ export default function Limit() {
       <View style={styles.subContainer}>
         <AppTitle text={"Consultar"}/>
         <AppSelectInput label={"Período"} editable={true} mes={mesConsulta} mesLista={mesListaConsulta} onMesChange={setMesConsulta} ano={anoConsulta} anoLista={anoListaConsulta} onAnoChange={setAnoConsulta}/>
-        <AppLimiteCard valor={limiteConsulta}></AppLimiteCard>
+        <AppLimiteCard valor={limiteConsulta.valor} editAction={() => editarLimite(limiteConsulta.id)} removeAction={() => removerLimite(limiteConsulta.id)}></AppLimiteCard>
       </View>
 
     </View>

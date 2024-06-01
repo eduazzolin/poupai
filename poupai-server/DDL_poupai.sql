@@ -14,7 +14,8 @@ CREATE TABLE despesas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     descricao VARCHAR(255) NOT NULL,
     valor DECIMAL(10, 2) NOT NULL,
-    mes_ano VARCHAR(7) NOT NULL, -- MM/YYYY
+    mes INT NOT NULL,
+    ano INT NOT NULL,
     usuario_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
@@ -23,7 +24,8 @@ CREATE TABLE despesas (
 CREATE TABLE limites (
     id INT AUTO_INCREMENT PRIMARY KEY,
     valor DECIMAL(10, 2) NOT NULL,
-    mes_ano VARCHAR(7) NOT NULL, -- MM/YYYY
+    mes INT NOT NULL,
+    ano INT NOT NULL,
     usuario_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)

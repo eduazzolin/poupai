@@ -69,13 +69,14 @@ Trabalho acadêmico com React Native - Senac 2024
 {
     "descricao": "string",
     "valor": "number",
-    "mes_ano": "string",
+    "mes": "number",
+    "ano": "number",
     "usuario_id": "number"
 }
 ```
 #### 2. listar por mês
 - Método: GET
-- Endpoint: /?mes_ano=string?usuario_id=number
+- Endpoint: /?mes=number?ano=number?usuario_id=number
 - Permissão: Privado
 #### 3. listar por usuario
 - Método: GET
@@ -93,13 +94,14 @@ Trabalho acadêmico com React Native - Senac 2024
 {
     "descricao": "string",
     "valor": "number",
-    "mes_ano": "string",
+    "mes": "number",
+    "ano": "number",
     "usuario_id": "number"
 }
 ```
 #### 6. valor total por mês
 - Método: GET
-- Endpoint: /total?mes_ano=string?usuario_id=number
+- Endpoint: /total?mes=number?ano=number?usuario_id=number
 - Permissão: Privado
 - Retorno: number
 - Exemplo de SQL: `SELECT SUM(valor) FROM despesas WHERE mes_ano = '012024' AND usuario_id = 1;` 
@@ -111,13 +113,14 @@ Trabalho acadêmico com React Native - Senac 2024
 ```json
 {
     "valor": "number",
-    "mes_ano": "string",
+    "mes": "number",
+    "ano": "number",
     "usuario_id": "number"
 }
 ```
 #### 2. listar por mês
 - Método: GET
-- Endpoint: /?mes_ano=string?usuario_id=number
+- Endpoint: /?mes=number?ano=number?usuario_id=number
 - Permissão: Privado
 #### 3. listar por usuario
 - Método: GET
@@ -134,7 +137,8 @@ Trabalho acadêmico com React Native - Senac 2024
 ```json
 {
     "valor": "number",
-    "mes_ano": "string",
+    "mes": "number",
+    "ano": "number",
     "usuario_id": "number"
 }
 ```

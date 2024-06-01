@@ -18,5 +18,16 @@ export const styles = StyleSheet.create({
     gap: 16,
     marginTop: 40,
     marginBottom: 40,
-  }
+  },
+   rowIconeDescricao: {
+    flexDirection: 'row',
+    gap: 8,
+   },
+  colIcone: {
+    width: 46,
+  },
+  colDescricao: {
+    flex: 1,
+    gap: 16,
+  },
 });

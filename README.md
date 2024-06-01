@@ -71,7 +71,8 @@ Trabalho acadêmico com React Native - Senac 2024
     "valor": "number",
     "mes": "number",
     "ano": "number",
-    "usuario_id": "number"
+    "usuario_id": "number",
+    "icone": "string"
 }
 ```
 #### 2. listar por mês
@@ -96,7 +97,8 @@ Trabalho acadêmico com React Native - Senac 2024
     "valor": "number",
     "mes": "number",
     "ano": "number",
-    "usuario_id": "number"
+    "usuario_id": "number",
+    "icone": "string"
 }
 ```
 #### 6. valor total por mês

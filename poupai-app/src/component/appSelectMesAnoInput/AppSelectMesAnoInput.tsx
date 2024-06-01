@@ -1,5 +1,5 @@
 import {Text, View} from "react-native";
-import {styles} from "./AppSelectInputStyle";
+import {styles} from "./AppSelectMesAnoInputStyle";
 import {Picker} from '@react-native-picker/picker';
 
 interface Month {
@@ -18,7 +18,7 @@ interface AppinputProps {
   onAnoChange: (value: string) => void;
 }
 
-export default function AppSelectInput({label, editable, mes, mesLista, onMesChange, ano, anoLista, onAnoChange}: AppinputProps) {
+export default function AppSelectMesAnoInput({label, editable, mes, mesLista, onMesChange, ano, anoLista, onAnoChange}: AppinputProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>

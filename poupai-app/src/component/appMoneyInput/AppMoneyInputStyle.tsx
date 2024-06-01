@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: '80%',
+    width: '100%',
   },
   label: {
     textAlign: 'left',

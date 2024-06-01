@@ -14,3 +14,7 @@ export const MESES = [
   { name: 'Novembro', value: 11 },
   { name: 'Dezembro', value: 12 }
 ];
+
+export function formatarMoeda(value: number) {
+  return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}

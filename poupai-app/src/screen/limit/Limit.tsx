@@ -7,7 +7,9 @@ import {getAnoAtual, getMesAtual, MESES} from '../../services/utils'
 import AppTitle from "../../component/appTitle/AppTitle";
 import AppPressable from "../../component/appPressable/AppPressable";
 import AppLimiteCard from "../../component/appLimiteCard/AppLimiteCard";
-import {getLimitePorMes, salvarLimite} from "../../services/limiteService";
+import {getLimitePorMes, salvarLimite, removerLimite} from "../../services/limiteService";
+import AppRemoverModal from "../../component/appRemoverModal/AppRemoverModal";
+import * as React from "react";
 
 export default function Limit() {
 
@@ -17,6 +19,10 @@ export default function Limit() {
    * ------------------------------------------------------------------
    */
   const [limiteConsulta, setLimiteConsulta] = useState(null)
+
+  const [modalRemoverVisible, setModalRemoverVisible] = useState(false)
+  const [limiteRemocaoId, setLimiteRemocaoId] = useState(0)
+  const [limiteRemocaoMesAno, setLimiteRemocaoMesAno] = useState("")
 
   const [idLimite, setIdLimite] = useState(0)
   const [limiteCadastro, setLimiteCadastro] = useState(0)
@@ -92,8 +98,20 @@ export default function Limit() {
    * salvar, remover, editar, etc
    * ------------------------------------------------------------------
    */
-  const removerLimite = (limiteObjeto) => {
-    console.log("Remover limite", limiteObjeto.id)
+  const handleModalDeRemocao = (limiteObjeto) => {
+    setLimiteRemocaoId(limiteObjeto.id)
+    setLimiteRemocaoMesAno(limiteObjeto.mes + "/" + limiteObjeto.ano)
+    setModalRemoverVisible(true)
+  }
+
+  const handleRemoverLimite = async () => {
+    setModalRemoverVisible(false)
+    try {
+      await removerLimite(limiteRemocaoId)
+      mountPage()
+    } catch (error) {
+      console.log("Erro ao remover limite", error)
+    }
   }
   const handleEditarLimite = (limiteObjeto) => {
     incorporarLimiteObjeto(limiteObjeto)
@@ -118,6 +136,16 @@ export default function Limit() {
   return (
 
     <View style={styles.container}>
+
+      <AppRemoverModal
+        modalVisible={modalRemoverVisible}
+        setModalVisible={setModalRemoverVisible}
+        title={"Tem certeza que deseja remover?"}
+        name={limiteRemocaoMesAno}
+        removerAction={handleRemoverLimite}
+      />
+
+
       <View style={styles.subContainer}>
         <AppTitle text={idLimite === 0 ? "Cadastrar Limite" : "Editar Limite"}/>
         <AppMoneyInput value={limiteCadastro} label={"Limite"} onValueChange={setLimiteCadastro}/>
@@ -157,7 +185,7 @@ export default function Limit() {
           <AppLimiteCard
             valor={limiteConsulta.valor}
             editAction={() => handleEditarLimite(limiteConsulta)}
-            removeAction={() => removerLimite(limiteConsulta)}
+            removeAction={() => handleModalDeRemocao(limiteConsulta)}
             mes={limiteConsulta.mes}
             ano={limiteConsulta.ano}
           />}

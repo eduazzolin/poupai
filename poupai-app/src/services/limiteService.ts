@@ -16,3 +16,7 @@ export const salvarLimite = async (limite) => {
     console.log("Inserindo limite", limite)
   }
 }
+
+export const removerLimite = async (id) => {
+  console.log("Removendo limite", id)
+}

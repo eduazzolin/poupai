@@ -11,8 +11,9 @@ import AppPressable from "../../component/appPressable/AppPressable";
 import AppDespesaCard from "../../component/appDespesaCard/AppDespesaCard";
 import AppIconeInput from "../../component/appIconeInput/AppIconeInput";
 import AppIconeModal from "../../component/appIconeModal/AppIconeModal";
-import {getDespesasPorMes, salvarDespesa} from "../../services/despesaService";
+import {getDespesasPorMes, salvarDespesa, removerDespesa} from "../../services/despesaService";
 import {useRef} from 'react';
+import AppRemoverModal from "../../component/appRemoverModal/AppRemoverModal";
 
 export default function Expense() {
 
@@ -24,17 +25,24 @@ export default function Expense() {
   const [despesas, setDespesas] = useState([])
   const [modalVisible, setModalVisible] = useState(false)
 
+  const [modalRemoverVisible, setModalRemoverVisible] = useState(false)
+  const [despesaRemocaoId, setDespesaRemocaoId] = useState(0)
+  const [despesaRemocaoDescricao, setDespesaRemocaoDescricao] = useState("")
+
   const [idDespesa, setIdDespesa] = useState(0)
   const [icone, setIcone] = useState("receipt")
   const [descricao, setDescricao] = useState("")
   const [valor, setValor] = useState(0)
   const [mesCadastro, setMesCadastro] = useState(getMesAtual())
   const [anoCadastro, setAnoCadastro] = useState(getAnoAtual())
-  const mesListaCadastro = MESES
-  const anoListaCadastro = ["2024", "2025", "2026", "2027", "2028"]
+
 
   const [mesConsulta, setMesConsulta] = useState(getMesAtual())
   const [anoConsulta, setAnoConsulta] = useState(getAnoAtual())
+
+  const mesListaCadastro = MESES
+  const anoListaCadastro = ["2024", "2025", "2026", "2027", "2028"]
+
   const mesListaConsulta = MESES
   const anoListaConsulta = ["2021", "2022", "2023", "2024", "2025"]
 
@@ -110,8 +118,20 @@ export default function Expense() {
    * salvar, remover, editar, etc
    * ------------------------------------------------------------------
    */
-  const removerDespesa = (despesaObjeto) => {
-    console.log("Remover despesa", despesaObjeto.id)
+  const handleModalDeRemocao = (despesaObjeto) => {
+    setDespesaRemocaoId(despesaObjeto.id)
+    setDespesaRemocaoDescricao(despesaObjeto.descricao)
+    setModalRemoverVisible(true)
+  }
+
+  const handleRemoverDespesa = async () => {
+    setModalRemoverVisible(false)
+    try {
+      await removerDespesa(despesaRemocaoId)
+      mountPage()
+    } catch (error) {
+      console.log("Erro ao remover despesa", error)
+    }
   }
 
   const handleEditarDespesa = (despesaObjeto) => {
@@ -120,7 +140,6 @@ export default function Expense() {
   }
 
   const handleSalvarDespesa = async () => {
-    //ToDo
     const despesaObjeto = montarDespesaObjeto();
     try {
       await salvarDespesa(despesaObjeto)
@@ -145,9 +164,15 @@ export default function Expense() {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         title={"Escolha um ícone"}
-        iconeLista={ICONES}>
-      </AppIconeModal>
+        iconeLista={ICONES}/>
 
+      <AppRemoverModal
+        modalVisible={modalRemoverVisible}
+        setModalVisible={setModalRemoverVisible}
+        title={"Tem certeza que deseja remover?"}
+        name={despesaRemocaoDescricao}
+        removerAction={handleRemoverDespesa}
+      />
 
       <View style={styles.subContainer}>
 
@@ -213,7 +238,7 @@ export default function Expense() {
                 key={index}
                 descricao={despesa.descricao}
                 valor={despesa.valor}
-                removeAction={() => removerDespesa(despesa)}
+                removeAction={() => handleModalDeRemocao(despesa)}
                 editAction={() => handleEditarDespesa(despesa)}
                 icone={despesa.icone}
                 mes={despesa.mes}

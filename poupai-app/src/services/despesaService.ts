@@ -60,3 +60,7 @@ export const salvarDespesa = async (despesa) => {
     console.log("Inserindo despesa", despesa)
   }
 }
+
+export const removerDespesa = async (id) => {
+  console.log("Removendo despesa", id)
+}

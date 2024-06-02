@@ -52,3 +52,13 @@ export const ICONES = [
 export function formatarMoeda(value: number) {
   return value.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
 }
+
+export function getMesAtual() {
+  const mes = (new Date().getMonth() + 1).toString()
+  return mes
+}
+
+export function getAnoAtual() {
+  const ano = new Date().getFullYear().toString()
+  return ano
+}

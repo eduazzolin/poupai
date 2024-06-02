@@ -4,91 +4,154 @@ import AppTitle from "../../component/appTitle/AppTitle";
 import AppMoneyInput from "../../component/appMoneyInput/AppMoneyInput";
 import AppTextInput from "../../component/appTextInput/AppTextInput";
 import * as React from "react";
-import {useState} from "react";
-import {ICONES, MESES} from "../../services/utils";
+import {useEffect, useState} from "react";
+import {ICONES, MESES, getAnoAtual, getMesAtual} from "../../services/utils";
 import AppSelectMesAnoInput from "../../component/appSelectMesAnoInput/AppSelectMesAnoInput";
 import AppPressable from "../../component/appPressable/AppPressable";
 import AppDespesaCard from "../../component/appDespesaCard/AppDespesaCard";
 import AppIconeInput from "../../component/appIconeInput/AppIconeInput";
 import AppIconeModal from "../../component/appIconeModal/AppIconeModal";
+import {getDespesasPorMes, salvarDespesa} from "../../services/despesaService";
+import {useRef} from 'react';
 
 export default function Expense() {
 
-  const [descricao, setDescricao] = useState("")
-  const [valor, setValor] = useState(0)
-  const [mesCadastro, setMesCadastro] = useState("")
-  const [anoCadastro, setAnoCadastro] = useState("")
-  const [mesConsulta, setMesConsulta] = useState("")
-  const [anoConsulta, setAnoConsulta] = useState("")
-  const [icone, setIcone] = useState("receipt")
+  /*
+   * ------------------------------------------------------------------
+   * variáveis useEffect()
+   * ------------------------------------------------------------------
+   */
+  const [despesas, setDespesas] = useState([])
   const [modalVisible, setModalVisible] = useState(false)
 
+  const [idDespesa, setIdDespesa] = useState(0)
+  const [icone, setIcone] = useState("receipt")
+  const [descricao, setDescricao] = useState("")
+  const [valor, setValor] = useState(0)
+  const [mesCadastro, setMesCadastro] = useState(getMesAtual())
+  const [anoCadastro, setAnoCadastro] = useState(getAnoAtual())
   const mesListaCadastro = MESES
   const anoListaCadastro = ["2021", "2022", "2023", "2024", "2025"]
+
+  const [mesConsulta, setMesConsulta] = useState(getMesAtual())
+  const [anoConsulta, setAnoConsulta] = useState(getAnoAtual())
   const mesListaConsulta = MESES
   const anoListaConsulta = ["2021", "2022", "2023", "2024", "2025"]
-  const iconeLista = ICONES
-  const despesas = [
-    {
-      descricao: "Aluguel",
-      valor: 1000,
-      id: 1,
-      icone: "home"
-    },
-    {
-      descricao: "Mercado",
-      valor: 500,
-      id: 2,
-      icone: "cart"
-    },
-    {
-      descricao: "Luz",
-      valor: 200,
-      id: 3,
-      icone: "bulb"
-    },
-    {
-      descricao: "Água",
-      valor: 100,
-      id: 4,
-      icone: "water"
-    },
-    {
-      descricao: "Internet",
-      valor: 100,
-      id: 5,
-      icone: "wifi"
-    },
-    {
-      descricao: "Telefone",
-      valor: 50,
-      id: 6,
-      icone: "call"
+
+
+
+  /*
+   * ------------------------------------------------------------------
+   * funções da página
+   * montar a página, rolar, etc
+   * ------------------------------------------------------------------
+   */
+  const mountPage = async () => {
+    try {
+      const despesas = await getDespesasPorMes(mesConsulta, anoConsulta)
+      setDespesas(despesas)
+    } catch (error) {
+      setDespesas([])
+      console.log("Erro ao buscar despesas", error)
     }
-  ]
-
-  const removerDespesa = (id: number) => {
-    console.log("Remover despesa", id)
-  }
-  const editarDespesa = (id: number) => {
-    console.log("Editar despesa", id)
   }
 
+  useEffect(() => {
+    mountPage();
+  }, [mesConsulta, anoConsulta]);
+
+  const scrollViewRef = useRef(null);
+  const handleScrollToTop = () => {
+    scrollViewRef.current?.scrollTo({y: 0, animated: true});
+  };
+
+
+
+  /*
+   * ------------------------------------------------------------------
+   * funções auxiliares
+   * montar objetos, modificar funções de estado, etc
+   * ------------------------------------------------------------------
+   */
+  function incorporarDespesaObjeto(despesaObjeto) {
+    if (despesaObjeto === null) {
+      setIdDespesa(0)
+      setIcone("receipt")
+      setDescricao("")
+      setValor(0)
+      setMesCadastro(getMesAtual())
+      setAnoCadastro(getAnoAtual())
+      return
+    }
+    setIdDespesa(despesaObjeto.id)
+    setIcone(despesaObjeto.icone)
+    setDescricao(despesaObjeto.descricao)
+    setValor(despesaObjeto.valor)
+    setMesCadastro(despesaObjeto.mes.toString())
+    setAnoCadastro(despesaObjeto.ano.toString())
+  }
+
+  function montarDespesaObjeto() {
+    return {
+      id: idDespesa,
+      icone: icone,
+      descricao: descricao,
+      valor: valor,
+      mes: parseInt(mesCadastro),
+      ano: parseInt(anoCadastro)
+    }
+  }
+
+
+  /*
+   * ------------------------------------------------------------------
+   * funções de CRUD
+   * salvar, remover, editar, etc
+   * ------------------------------------------------------------------
+   */
+  const removerDespesa = (despesaObjeto) => {
+    console.log("Remover despesa", despesaObjeto.id)
+  }
+
+  const handleEditarDespesa = (despesaObjeto) => {
+    handleScrollToTop()
+    incorporarDespesaObjeto(despesaObjeto);
+  }
+
+  const handleSalvarDespesa = async () => {
+    //ToDo
+    const despesaObjeto = montarDespesaObjeto();
+    try {
+      await salvarDespesa(despesaObjeto)
+      incorporarDespesaObjeto(null)
+      mountPage()
+    } catch (error) {
+      console.log("Erro ao salvar despesa", error)
+    }
+  }
+
+
+
+  /*
+   * ------------------------------------------------------------------
+   * View
+   * ------------------------------------------------------------------
+   */
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView ref={scrollViewRef} style={styles.container}>
 
       <AppIconeModal
         icone={[icone, setIcone]}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         title={"Escolha um ícone"}
-        iconeLista={iconeLista}>
+        iconeLista={ICONES}>
       </AppIconeModal>
 
 
       <View style={styles.subContainer}>
 
-        <AppTitle text={"Cadastrar Despesa"}/>
+        <AppTitle text={idDespesa === 0 ? "Cadastrar Despesa" : "Editar Despesa"}/>
 
         <View style={styles.rowIconeDescricao}>
           <View style={styles.colIcone}>
@@ -100,27 +163,50 @@ export default function Expense() {
         </View>
 
         <AppMoneyInput value={valor} label={"Valor"} onValueChange={setValor}/>
-        <AppSelectMesAnoInput label={"Período"} editable={true} mes={mesCadastro} mesLista={mesListaCadastro} onMesChange={setMesCadastro} ano={anoCadastro} anoLista={anoListaCadastro} onAnoChange={setAnoCadastro}/>
-        <AppPressable text={"Salvar"} action={() => console.log("Salvar")}/>
+        <AppSelectMesAnoInput
+          label={"Período"}
+          editable={true}
+          mes={mesCadastro}
+          mesLista={mesListaCadastro}
+          onMesChange={setMesCadastro}
+          ano={anoCadastro}
+          anoLista={anoListaCadastro}
+          onAnoChange={setAnoCadastro}
+        />
+        <AppPressable
+          text={idDespesa === 0 ? "Cadastrar" : "Salvar edição"}
+          action={handleSalvarDespesa}
+        />
 
       </View>
 
 
       <View style={styles.subContainerHistorico}>
         <AppTitle text={"Histórico"}/>
-        <AppSelectMesAnoInput label={"Período"} editable={true} mes={mesConsulta} mesLista={mesListaConsulta} onMesChange={setMesConsulta} ano={anoConsulta} anoLista={anoListaConsulta} onAnoChange={setAnoConsulta}/>
-        {despesas.map((despesa, index) => {
-          return (
-            <AppDespesaCard
-              key={index}
-              descricao={despesa.descricao}
-              valor={despesa.valor}
-              removeAction={() => removerDespesa(despesa.id)}
-              editAction={() => editarDespesa(despesa.id)}
-              icone={despesa.icone}
-            />
-          )
-        })}
+        <AppSelectMesAnoInput
+          label={"Período"}
+          editable={true}
+          mes={mesConsulta}
+          mesLista={mesListaConsulta}
+          onMesChange={setMesConsulta}
+          ano={anoConsulta}
+          anoLista={anoListaConsulta}
+          onAnoChange={setAnoConsulta}
+        />
+        {
+          despesas.length === 0 ?
+            <AppTitle text={"Nenhuma despesa cadastrada"}/> :
+            despesas.map((despesa, index) =>
+              <AppDespesaCard
+                key={index}
+                descricao={despesa.descricao}
+                valor={despesa.valor}
+                removeAction={() => removerDespesa(despesa)}
+                editAction={() => handleEditarDespesa(despesa)}
+                icone={despesa.icone}
+              />
+            )
+        }
       </View>
 
     </ScrollView>

@@ -19,10 +19,10 @@ export const styles = StyleSheet.create({
     marginTop: 40,
     marginBottom: 40,
   },
-   rowIconeDescricao: {
+  rowIconeDescricao: {
     flexDirection: 'row',
     gap: 8,
-   },
+  },
   colIcone: {
     width: 46,
   },
@@ -30,4 +30,12 @@ export const styles = StyleSheet.create({
     flex: 1,
     gap: 16,
   },
+  botoesCadastrar: {
+    flexDirection: 'row',
+    gap: 8,
+    flexWrap: 'nowrap',
+  },
+  botoesCadastrarUnidade: {
+    flex: 1,
+  }
 });

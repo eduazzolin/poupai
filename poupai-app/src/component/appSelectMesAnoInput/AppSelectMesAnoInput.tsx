@@ -1,6 +1,12 @@
 import {Text, View} from "react-native";
 import {styles} from "./AppSelectMesAnoInputStyle";
 import {Picker} from '@react-native-picker/picker';
+import {isMesAnoIgualOuPosteriorADataAtual} from "../../services/utils";
+
+/*
+https://github.com/react-native-picker/picker
+ */
+
 
 interface Month {
   name: string;
@@ -16,9 +22,10 @@ interface AppinputProps {
   ano: string;
   anoLista: string[];
   onAnoChange: (value: string) => void;
+  bloquearDatasAnteriores?: boolean;
 }
 
-export default function AppSelectMesAnoInput({label, editable, mes, mesLista, onMesChange, ano, anoLista, onAnoChange}: AppinputProps) {
+export default function AppSelectMesAnoInput({label, editable, mes, mesLista, onMesChange, ano, anoLista, onAnoChange, bloquearDatasAnteriores=false}: AppinputProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>
@@ -33,6 +40,8 @@ export default function AppSelectMesAnoInput({label, editable, mes, mesLista, on
             }
             enabled={editable}>
             {mesLista.map((item) => (
+              bloquearDatasAnteriores && !isMesAnoIgualOuPosteriorADataAtual(item.value, parseInt(ano)) ?
+              <Picker.Item label={item.name} value={item.value.toString()} key={item.value} enabled={false} style={{color: "gray"}}/> :
               <Picker.Item label={item.name} value={item.value.toString()} key={item.value}/>
             ))}
           </Picker>

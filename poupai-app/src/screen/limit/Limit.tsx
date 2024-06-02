@@ -81,6 +81,10 @@ export default function Limit() {
     }
   }
 
+  function handleCancelar() {
+    incorporarLimiteObjeto(null)
+  }
+
 
   /*
    * ------------------------------------------------------------------
@@ -117,11 +121,33 @@ export default function Limit() {
       <View style={styles.subContainer}>
         <AppTitle text={idLimite === 0 ? "Cadastrar Limite" : "Editar Limite"}/>
         <AppMoneyInput value={limiteCadastro} label={"Limite"} onValueChange={setLimiteCadastro}/>
-        <AppSelectMesAnoInput label={"Período"} editable={true} mes={mesCadastro} mesLista={mesListaCadastro} onMesChange={setMesCadastro} ano={anoCadastro} anoLista={anoListaCadastro} onAnoChange={setAnoCadastro}/>
-        <AppPressable
-          text={idLimite === 0 ? "Cadastrar" : "Salvar edição"}
-          action={handleSalvarLimite}
+        <AppSelectMesAnoInput
+          label={"Período"}
+          editable={true}
+          mes={mesCadastro}
+          mesLista={mesListaCadastro}
+          onMesChange={setMesCadastro}
+          ano={anoCadastro}
+          anoLista={anoListaCadastro}
+          onAnoChange={setAnoCadastro}
+          bloquearDatasAnteriores={true}
         />
+        <View style={styles.botoesCadastrar}>
+          {idLimite !== 0 ?
+            <View style={styles.botoesCadastrarUnidade}>
+              <AppPressable
+                text={"Cancelar"}
+                action={handleCancelar}
+              />
+            </View> : null}
+          <View style={styles.botoesCadastrarUnidade}>
+            <AppPressable
+              text={idLimite === 0 ? "Cadastrar" : "Salvar edição"}
+              action={handleSalvarLimite}
+            />
+          </View>
+
+        </View>
       </View>
 
       <View style={styles.subContainer}>
@@ -131,7 +157,10 @@ export default function Limit() {
           <AppLimiteCard
             valor={limiteConsulta.valor}
             editAction={() => handleEditarLimite(limiteConsulta)}
-            removeAction={() => removerLimite(limiteConsulta)}/>}
+            removeAction={() => removerLimite(limiteConsulta)}
+            mes={limiteConsulta.mes}
+            ano={limiteConsulta.ano}
+          />}
       </View>
 
     </View>

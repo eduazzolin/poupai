@@ -19,7 +19,7 @@ Trabalho acadêmico com React Native - Senac 2024
 ### Fluxo de Cadastro de Despesa
 - Tela/modal para cadastrar, editar e excluir despesa.
   - Campos: descrição, valor, mês referência.
-  - Não é permitido para meses anteriores ao corrente.
+  - Não é permitido para meses anteriores ao corrente. 
   - Busca de despesas por mês (Histórico).
 ### Fluxo de Cadastro de Limite
 - Tela/modal para cadastrar, editar e excluir limite mensal.

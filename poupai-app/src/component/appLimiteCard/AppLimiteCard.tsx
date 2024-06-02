@@ -1,6 +1,6 @@
 import {Text, TextInput, View} from "react-native";
 import {styles} from "./AppLimiteCardStyle";
-import {formatarMoeda} from "../../services/utils";
+import {formatarMoeda, isMesAnoIgualOuPosteriorADataAtual} from "../../services/utils";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as React from "react";
 import AppEditarRemoverPressable from "../appEditarRemoverPressables/AppEditarRemoverPressable";
@@ -9,9 +9,11 @@ interface AppinputProps {
   valor: number;
   editAction?: () => void;
   removeAction?: () => void;
+  mes: number;
+  ano: number;
 }
 
-export default function AppLimiteCard({valor, removeAction, editAction}: AppinputProps) {
+export default function AppLimiteCard({valor, removeAction, editAction, mes, ano}: AppinputProps) {
   return (
     <View style={styles.container}>
       <View style={styles.rowValor}>
@@ -20,7 +22,11 @@ export default function AppLimiteCard({valor, removeAction, editAction}: Appinpu
           {formatarMoeda(valor)}
         </Text>
       </View>
-      <AppEditarRemoverPressable editAction={editAction} removeAction={removeAction}/>
+      {
+        isMesAnoIgualOuPosteriorADataAtual(mes, ano) ?
+          <AppEditarRemoverPressable editAction={editAction} removeAction={removeAction}/>
+          : null
+      }
     </View>
   );
 }

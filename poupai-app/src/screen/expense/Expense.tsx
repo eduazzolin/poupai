@@ -31,13 +31,12 @@ export default function Expense() {
   const [mesCadastro, setMesCadastro] = useState(getMesAtual())
   const [anoCadastro, setAnoCadastro] = useState(getAnoAtual())
   const mesListaCadastro = MESES
-  const anoListaCadastro = ["2021", "2022", "2023", "2024", "2025"]
+  const anoListaCadastro = ["2024", "2025", "2026", "2027", "2028"]
 
   const [mesConsulta, setMesConsulta] = useState(getMesAtual())
   const [anoConsulta, setAnoConsulta] = useState(getAnoAtual())
   const mesListaConsulta = MESES
   const anoListaConsulta = ["2021", "2022", "2023", "2024", "2025"]
-
 
 
   /*
@@ -64,7 +63,6 @@ export default function Expense() {
   const handleScrollToTop = () => {
     scrollViewRef.current?.scrollTo({y: 0, animated: true});
   };
-
 
 
   /*
@@ -102,6 +100,9 @@ export default function Expense() {
     }
   }
 
+  function handleCancelar() {
+    incorporarDespesaObjeto(null)
+  }
 
   /*
    * ------------------------------------------------------------------
@@ -129,7 +130,6 @@ export default function Expense() {
       console.log("Erro ao salvar despesa", error)
     }
   }
-
 
 
   /*
@@ -172,11 +172,23 @@ export default function Expense() {
           ano={anoCadastro}
           anoLista={anoListaCadastro}
           onAnoChange={setAnoCadastro}
+          bloquearDatasAnteriores={true}
         />
-        <AppPressable
-          text={idDespesa === 0 ? "Cadastrar" : "Salvar edição"}
-          action={handleSalvarDespesa}
-        />
+        <View style={styles.botoesCadastrar}>
+          {idDespesa !== 0 ?
+            <View style={styles.botoesCadastrarUnidade}>
+              <AppPressable
+                text={"Cancelar"}
+                action={handleCancelar}
+              />
+            </View> : null}
+          <View style={styles.botoesCadastrarUnidade}>
+            <AppPressable
+              text={idDespesa === 0 ? "Cadastrar" : "Salvar edição"}
+              action={handleSalvarDespesa}
+            />
+          </View>
+        </View>
 
       </View>
 
@@ -204,6 +216,8 @@ export default function Expense() {
                 removeAction={() => removerDespesa(despesa)}
                 editAction={() => handleEditarDespesa(despesa)}
                 icone={despesa.icone}
+                mes={despesa.mes}
+                ano={despesa.ano}
               />
             )
         }

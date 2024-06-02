@@ -13,5 +13,12 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-start',
     gap: 16,
   },
-
+  botoesCadastrar: {
+    flexDirection: 'row',
+    gap: 8,
+    flexWrap: 'nowrap',
+  },
+  botoesCadastrarUnidade: {
+    flex: 1,
+  }
 });

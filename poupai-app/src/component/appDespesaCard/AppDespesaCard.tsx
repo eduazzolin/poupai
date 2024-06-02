@@ -4,16 +4,20 @@ import {formatarMoeda} from "../../services/utils";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as React from "react";
 import AppEditarRemoverPressable from "../appEditarRemoverPressables/AppEditarRemoverPressable";
+import {getMesAtual, getAnoAtual, isMesAnoIgualOuPosteriorADataAtual} from "../../services/utils";
 
 interface AppinputProps {
   descricao: string;
   valor: number;
+  mes: number;
+  ano: number;
   editAction?: () => void;
   removeAction?: () => void;
   icone: string;
 }
 
-export default function AppDespesaCard({descricao, valor, removeAction, editAction, icone}: AppinputProps) {
+export default function AppDespesaCard({descricao, valor, removeAction, editAction, icone, mes, ano}: AppinputProps) {
+
   return (
     <View style={styles.container}>
       <View style={styles.rowConteudo}>
@@ -27,7 +31,13 @@ export default function AppDespesaCard({descricao, valor, removeAction, editActi
           </Text>
         </View>
       </View>
-      <AppEditarRemoverPressable editAction={editAction} removeAction={removeAction}/>
+      {
+        isMesAnoIgualOuPosteriorADataAtual(mes, ano) ?
+          <AppEditarRemoverPressable editAction={editAction} removeAction={removeAction}/>
+          : null
+      }
+
+
     </View>
   );
 }

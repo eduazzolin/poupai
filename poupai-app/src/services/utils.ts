@@ -62,3 +62,11 @@ export function getAnoAtual() {
   const ano = new Date().getFullYear().toString()
   return ano
 }
+
+export function isMesAnoIgualOuPosteriorADataAtual(mes: number, ano: number) {
+  const mesAtual = parseInt(getMesAtual())
+  const anoAtual = parseInt(getAnoAtual())
+  const dataAtual = new Date(anoAtual, mesAtual)
+  const dataDespesa = new Date(ano, mes)
+  return dataDespesa >= dataAtual
+}

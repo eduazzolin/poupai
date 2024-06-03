@@ -1,5 +1,5 @@
 import {styles} from './LimitStyle';
-import {View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 import AppMoneyInput from "../../component/appMoneyInput/AppMoneyInput";
 import {useEffect, useState} from "react";
 import AppSelectMesAnoInput from "../../component/appSelectMesAnoInput/AppSelectMesAnoInput";
@@ -19,6 +19,7 @@ export default function Limit() {
    * ------------------------------------------------------------------
    */
   const [limiteConsulta, setLimiteConsulta] = useState(null)
+  const [erro, setErro] = useState("")
 
   const [modalRemoverVisible, setModalRemoverVisible] = useState(false)
   const [limiteRemocaoId, setLimiteRemocaoId] = useState(0)
@@ -47,6 +48,7 @@ export default function Limit() {
     try {
       const limite = await getLimitePorMes(mesConsulta, anoConsulta)
       setLimiteConsulta(limite)
+      setErro("")
     } catch (error) {
       setLimiteConsulta(null)
       console.log("Erro ao buscar limite", error)
@@ -89,6 +91,7 @@ export default function Limit() {
 
   function handleCancelar() {
     incorporarLimiteObjeto(null)
+    setErro("")
   }
 
 
@@ -123,7 +126,7 @@ export default function Limit() {
       incorporarLimiteObjeto(null)
       mountPage()
     } catch (error) {
-      console.log("Erro ao salvar limite", error)
+      setErro(error.message)
     }
   }
 
@@ -135,7 +138,7 @@ export default function Limit() {
    */
   return (
 
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
 
       <AppRemoverModal
         modalVisible={modalRemoverVisible}
@@ -160,6 +163,7 @@ export default function Limit() {
           onAnoChange={setAnoCadastro}
           bloquearDatasAnteriores={true}
         />
+        {erro ? <Text style={styles.erro}>{erro}</Text> : null}
         <View style={styles.botoesCadastrar}>
           {idLimite !== 0 ?
             <View style={styles.botoesCadastrarUnidade}>
@@ -178,7 +182,7 @@ export default function Limit() {
         </View>
       </View>
 
-      <View style={styles.subContainer}>
+      <View style={styles.subContainerConsultar}>
         <AppTitle text={"Consultar"}/>
         <AppSelectMesAnoInput label={"Período"} editable={true} mes={mesConsulta} mesLista={mesListaConsulta} onMesChange={setMesConsulta} ano={anoConsulta} anoLista={anoListaConsulta} onAnoChange={setAnoConsulta}/>
         {limiteConsulta == null ? <AppTitle text={"Sem limite cadastrado"}/> :
@@ -191,6 +195,6 @@ export default function Limit() {
           />}
       </View>
 
-    </View>
+    </ScrollView>
   )
 }

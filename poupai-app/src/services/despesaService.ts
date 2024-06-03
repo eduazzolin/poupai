@@ -1,3 +1,5 @@
+import {isMesAnoIgualOuPosteriorADataAtual} from "./utils";
+
 export const getDespesasPorMes = async (mes, ano) => {
   console.log("Buscando despesas por mes", mes, ano)
 
@@ -54,6 +56,7 @@ export const getDespesasPorMes = async (mes, ano) => {
 }
 
 export const salvarDespesa = async (despesa) => {
+  validarDespesa(despesa)
   if (despesa.id) {
     console.log("Atualizando despesa", despesa)
   } else {
@@ -63,4 +66,34 @@ export const salvarDespesa = async (despesa) => {
 
 export const removerDespesa = async (id) => {
   console.log("Removendo despesa", id)
+}
+
+export const validarDespesa = (despesa) => {
+  if (!despesa.descricao) {
+    throw new Error("Descrição é obrigatória")
+  }
+
+  if (!despesa.valor) {
+    throw new Error("Valor é obrigatório")
+  }
+
+  if (despesa.valor <= 0) {
+    throw new Error("Valor deve ser maior que zero")
+  }
+
+  if (!despesa.mes) {
+    throw new Error("Mês é obrigatório")
+  }
+  if (despesa.mes < 1 || despesa.mes > 12) {
+    throw new Error("Mês inválido")
+  }
+
+  if (!despesa.ano) {
+    throw new Error("Ano é obrigatório")
+  }
+
+  if(!isMesAnoIgualOuPosteriorADataAtual(despesa.mes, despesa.ano)){
+    throw new Error("Mês e ano devem ser iguais ou posteriores a data atual")
+  }
+
 }

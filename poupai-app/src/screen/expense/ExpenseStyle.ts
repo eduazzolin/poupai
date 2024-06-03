@@ -37,5 +37,8 @@ export const styles = StyleSheet.create({
   },
   botoesCadastrarUnidade: {
     flex: 1,
+  },
+  erro: {
+    color: 'red',
   }
 });

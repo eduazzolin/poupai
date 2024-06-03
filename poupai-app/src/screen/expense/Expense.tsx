@@ -1,18 +1,17 @@
 import {styles} from './ExpenseStyle';
-import {ScrollView, View} from 'react-native';
+import {ScrollView, View, Text} from 'react-native';
 import AppTitle from "../../component/appTitle/AppTitle";
 import AppMoneyInput from "../../component/appMoneyInput/AppMoneyInput";
 import AppTextInput from "../../component/appTextInput/AppTextInput";
 import * as React from "react";
-import {useEffect, useState} from "react";
-import {ICONES, MESES, getAnoAtual, getMesAtual} from "../../services/utils";
+import {useEffect, useRef, useState} from "react";
+import {getAnoAtual, getMesAtual, ICONES, MESES} from "../../services/utils";
 import AppSelectMesAnoInput from "../../component/appSelectMesAnoInput/AppSelectMesAnoInput";
 import AppPressable from "../../component/appPressable/AppPressable";
 import AppDespesaCard from "../../component/appDespesaCard/AppDespesaCard";
 import AppIconeInput from "../../component/appIconeInput/AppIconeInput";
 import AppIconeModal from "../../component/appIconeModal/AppIconeModal";
-import {getDespesasPorMes, salvarDespesa, removerDespesa} from "../../services/despesaService";
-import {useRef} from 'react';
+import {getDespesasPorMes, removerDespesa, salvarDespesa} from "../../services/despesaService";
 import AppRemoverModal from "../../component/appRemoverModal/AppRemoverModal";
 
 export default function Expense() {
@@ -23,6 +22,7 @@ export default function Expense() {
    * ------------------------------------------------------------------
    */
   const [despesas, setDespesas] = useState([])
+  const [erro, setErro] = useState("")
   const [modalVisible, setModalVisible] = useState(false)
 
   const [modalRemoverVisible, setModalRemoverVisible] = useState(false)
@@ -35,7 +35,6 @@ export default function Expense() {
   const [valor, setValor] = useState(0)
   const [mesCadastro, setMesCadastro] = useState(getMesAtual())
   const [anoCadastro, setAnoCadastro] = useState(getAnoAtual())
-
 
   const [mesConsulta, setMesConsulta] = useState(getMesAtual())
   const [anoConsulta, setAnoConsulta] = useState(getAnoAtual())
@@ -57,9 +56,9 @@ export default function Expense() {
     try {
       const despesas = await getDespesasPorMes(mesConsulta, anoConsulta)
       setDespesas(despesas)
+      setErro("")
     } catch (error) {
       setDespesas([])
-      console.log("Erro ao buscar despesas", error)
     }
   }
 
@@ -110,6 +109,7 @@ export default function Expense() {
 
   function handleCancelar() {
     incorporarDespesaObjeto(null)
+    setErro("")
   }
 
   /*
@@ -146,7 +146,7 @@ export default function Expense() {
       incorporarDespesaObjeto(null)
       mountPage()
     } catch (error) {
-      console.log("Erro ao salvar despesa", error)
+      setErro(error.message)
     }
   }
 
@@ -199,6 +199,7 @@ export default function Expense() {
           onAnoChange={setAnoCadastro}
           bloquearDatasAnteriores={true}
         />
+        {erro ? <Text style={styles.erro}>{erro}</Text> : null}
         <View style={styles.botoesCadastrar}>
           {idDespesa !== 0 ?
             <View style={styles.botoesCadastrarUnidade}>

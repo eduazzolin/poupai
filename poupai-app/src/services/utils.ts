@@ -16,6 +16,8 @@ export const MESES = [
 
 export const ICONES = [
   "receipt",
+  "home",
+  "water",
   "basket",
   "car",
   "bus",
@@ -26,13 +28,12 @@ export const ICONES = [
   "bed",
   "calendar",
   "card",
-  "camera",
+  "wifi",
   "call",
   "dice",
   "document-sharp",
   "barbell",
   "bicycle",
-  "boat",
   "fish",
   "game-controller",
   "musical-notes-sharp",
@@ -54,13 +55,11 @@ export function formatarMoeda(value: number) {
 }
 
 export function getMesAtual() {
-  const mes = (new Date().getMonth() + 1).toString()
-  return mes
+  return (new Date().getMonth() + 1).toString()
 }
 
 export function getAnoAtual() {
-  const ano = new Date().getFullYear().toString()
-  return ano
+  return new Date().getFullYear().toString()
 }
 
 export function isMesAnoIgualOuPosteriorADataAtual(mes: number, ano: number) {

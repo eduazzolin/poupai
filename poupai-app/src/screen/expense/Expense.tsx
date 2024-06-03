@@ -136,6 +136,7 @@ export default function Expense() {
 
   const handleEditarDespesa = (despesaObjeto) => {
     handleScrollToTop()
+    setErro("")
     incorporarDespesaObjeto(despesaObjeto);
   }
 

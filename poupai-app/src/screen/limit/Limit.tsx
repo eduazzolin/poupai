@@ -117,6 +117,7 @@ export default function Limit() {
     }
   }
   const handleEditarLimite = (limiteObjeto) => {
+    setErro("")
     incorporarLimiteObjeto(limiteObjeto)
   }
   const handleSalvarLimite = async () => {

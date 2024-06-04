@@ -15,7 +15,7 @@ export default function Limit() {
 
   /*
    * ------------------------------------------------------------------
-   * variáveis useEffect()
+   * variáveis useState()
    * ------------------------------------------------------------------
    */
   const [limiteConsulta, setLimiteConsulta] = useState(null)
@@ -144,8 +144,8 @@ export default function Limit() {
       <AppRemoverModal
         modalVisible={modalRemoverVisible}
         setModalVisible={setModalRemoverVisible}
-        title={"Tem certeza que deseja remover?"}
-        name={limiteRemocaoMesAno}
+        title={"Confirmar remoção"}
+        name={"Tem certeza que deseja remover o limite de '" + limiteRemocaoMesAno + "'?"}
         removerAction={handleRemoverLimite}
       />
 

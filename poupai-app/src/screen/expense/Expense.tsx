@@ -18,7 +18,7 @@ export default function Expense() {
 
   /*
    * ------------------------------------------------------------------
-   * variáveis useEffect()
+   * variáveis useState()
    * ------------------------------------------------------------------
    */
   const [despesas, setDespesas] = useState([])
@@ -170,8 +170,8 @@ export default function Expense() {
       <AppRemoverModal
         modalVisible={modalRemoverVisible}
         setModalVisible={setModalRemoverVisible}
-        title={"Tem certeza que deseja remover?"}
-        name={despesaRemocaoDescricao}
+        title={"Confirmar remoção"}
+        name={"Tem certeza que deseja remover a despesa '" + despesaRemocaoDescricao + "'?"}
         removerAction={handleRemoverDespesa}
       />
 

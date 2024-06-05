@@ -60,7 +60,7 @@ export default function Expense() {
     try {
       const despesas = await getDespesasPorMes(mesConsulta, anoConsulta)
       setDespesas(despesas)
-      setDespesasGrafico(montarDadosDoGrafico)
+      montarDadosDoGrafico(despesas)
       setErro("")
     } catch (error) {
       setDespesas([])
@@ -117,11 +117,10 @@ export default function Expense() {
     setErro("")
   }
 
-  function montarDadosDoGrafico() {
+  function montarDadosDoGrafico(_despesas) {
     const dados = []
     const dadosAgregadosPorIcone = []
-
-    despesas.forEach(despesa => {
+    _despesas.forEach(despesa => {
       const index = dadosAgregadosPorIcone.findIndex(item => item.icone === despesa.icone)
       if (index === -1) {
         dadosAgregadosPorIcone.push({icone: despesa.icone, valor: despesa.valor})
@@ -129,7 +128,6 @@ export default function Expense() {
         dadosAgregadosPorIcone[index].valor += despesa.valor
       }
     })
-
 
     dadosAgregadosPorIcone.forEach(despesa => {
       dados.push({
@@ -141,7 +139,7 @@ export default function Expense() {
         )
       })
     })
-    return dados
+    setDespesasGrafico(dados)
   }
 
   /*
@@ -263,6 +261,7 @@ export default function Expense() {
           onAnoChange={setAnoConsulta}
         />
 
+        {/*https://gifted-charts.web.app/barchart*/}
         <BarChart
           barWidth={20}
           barBorderRadius={4}

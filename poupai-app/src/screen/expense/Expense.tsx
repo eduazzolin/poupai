@@ -129,6 +129,8 @@ export default function Expense() {
       }
     })
 
+    dadosAgregadosPorIcone.sort((a, b) => b.valor - a.valor)
+
     dadosAgregadosPorIcone.forEach(despesa => {
       dados.push({
         value: despesa.valor,
@@ -139,6 +141,8 @@ export default function Expense() {
         )
       })
     })
+
+
     setDespesasGrafico(dados)
   }
 

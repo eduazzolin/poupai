@@ -54,6 +54,11 @@ export function formatarMoeda(value: number) {
   return value.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
 }
 
+export function formatarMoedaSemDecimal(value: number) {
+  return value.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL', minimumFractionDigits: 0});
+
+}
+
 export function getMesAtual() {
   return (new Date().getMonth() + 1).toString()
 }

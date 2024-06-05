@@ -14,8 +14,40 @@ export const getDespesasPorMes = async (mes, ano) => {
     },
     {
       descricao: "Mercado",
-      valor: 500,
+      valor: 1000,
       id: 2,
+      icone: "cart",
+      mes: 8,
+      ano: 2024
+    },
+    {
+      descricao: "Academia",
+      valor: 100,
+      id: 3,
+      icone: "barbell",
+      mes: 8,
+      ano: 2024
+    },
+    {
+      descricao: "Jogos",
+      valor: 100,
+      id: 4,
+      icone: "game-controller",
+      mes: 8,
+      ano: 2024
+    },
+    {
+      descricao: "Mercado",
+      valor: 25.5,
+      id: 5,
+      icone: "cart",
+      mes: 8,
+      ano: 2024
+    },
+    {
+      descricao: "Mercado",
+      valor: 10,
+      id: 6,
       icone: "cart",
       mes: 8,
       ano: 2024
@@ -23,7 +55,7 @@ export const getDespesasPorMes = async (mes, ano) => {
     {
       descricao: "Luz",
       valor: 200,
-      id: 3,
+      id: 7,
       icone: "bulb",
       mes: 8,
       ano: 2024
@@ -31,7 +63,7 @@ export const getDespesasPorMes = async (mes, ano) => {
     {
       descricao: "Água",
       valor: 100,
-      id: 4,
+      id: 8,
       icone: "water",
       mes: 8,
       ano: 2024
@@ -39,7 +71,7 @@ export const getDespesasPorMes = async (mes, ano) => {
     {
       descricao: "Internet",
       valor: 100,
-      id: 5,
+      id: 9,
       icone: "wifi",
       mes: 8,
       ano: 2024
@@ -47,7 +79,7 @@ export const getDespesasPorMes = async (mes, ano) => {
     {
       descricao: "Telefone",
       valor: 50,
-      id: 6,
+      id: 10,
       icone: "call",
       mes: 8,
       ano: 2024

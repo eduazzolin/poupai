@@ -1,11 +1,11 @@
 import {styles} from './ExpenseStyle';
-import {ScrollView, View, Text} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 import AppTitle from "../../component/appTitle/AppTitle";
 import AppMoneyInput from "../../component/appMoneyInput/AppMoneyInput";
 import AppTextInput from "../../component/appTextInput/AppTextInput";
 import * as React from "react";
 import {useEffect, useRef, useState} from "react";
-import {getAnoAtual, getMesAtual, ICONES, MESES} from "../../services/utils";
+import {formatarMoedaSemDecimal, getAnoAtual, getMesAtual, ICONES, MESES} from "../../services/utils";
 import AppSelectMesAnoInput from "../../component/appSelectMesAnoInput/AppSelectMesAnoInput";
 import AppPressable from "../../component/appPressable/AppPressable";
 import AppDespesaCard from "../../component/appDespesaCard/AppDespesaCard";
@@ -13,6 +13,8 @@ import AppIconeInput from "../../component/appIconeInput/AppIconeInput";
 import AppIconeModal from "../../component/appIconeModal/AppIconeModal";
 import {getDespesasPorMes, removerDespesa, salvarDespesa} from "../../services/despesaService";
 import AppRemoverModal from "../../component/appRemoverModal/AppRemoverModal";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import {BarChart} from "react-native-gifted-charts";
 
 export default function Expense() {
 
@@ -22,6 +24,8 @@ export default function Expense() {
    * ------------------------------------------------------------------
    */
   const [despesas, setDespesas] = useState([])
+  const [despesasGrafico, setDespesasGrafico] = useState([])
+
   const [erro, setErro] = useState("")
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -56,6 +60,7 @@ export default function Expense() {
     try {
       const despesas = await getDespesasPorMes(mesConsulta, anoConsulta)
       setDespesas(despesas)
+      setDespesasGrafico(montarDadosDoGrafico)
       setErro("")
     } catch (error) {
       setDespesas([])
@@ -112,6 +117,33 @@ export default function Expense() {
     setErro("")
   }
 
+  function montarDadosDoGrafico() {
+    const dados = []
+    const dadosAgregadosPorIcone = []
+
+    despesas.forEach(despesa => {
+      const index = dadosAgregadosPorIcone.findIndex(item => item.icone === despesa.icone)
+      if (index === -1) {
+        dadosAgregadosPorIcone.push({icone: despesa.icone, valor: despesa.valor})
+      } else {
+        dadosAgregadosPorIcone[index].valor += despesa.valor
+      }
+    })
+
+
+    dadosAgregadosPorIcone.forEach(despesa => {
+      dados.push({
+        value: despesa.valor,
+        labelComponent: () => (
+          <View style={{alignItems: 'center'}}>
+          <Ionicons name={despesa.icone} size={20} color="black"/>
+          </View>
+        )
+      })
+    })
+    return dados
+  }
+
   /*
    * ------------------------------------------------------------------
    * funções de CRUD
@@ -151,7 +183,6 @@ export default function Expense() {
     }
   }
 
-
   /*
    * ------------------------------------------------------------------
    * View
@@ -159,7 +190,6 @@ export default function Expense() {
    */
   return (
     <ScrollView ref={scrollViewRef} style={styles.container}>
-
       <AppIconeModal
         icone={[icone, setIcone]}
         modalVisible={modalVisible}
@@ -232,6 +262,21 @@ export default function Expense() {
           anoLista={anoListaConsulta}
           onAnoChange={setAnoConsulta}
         />
+
+        <BarChart
+          barWidth={20}
+          barBorderRadius={4}
+          frontColor="black"
+          data={despesasGrafico}
+          isAnimated
+          disablePress
+          height={250}
+          yAxisLabelWidth={60}
+          yAxisTextStyle={{fontSize: 12,}}
+          yAxisLabelContainerStyle={{alignItems: 'flex-end', justifyContent: 'flex-start'}}
+          formatYLabel={(value) => formatarMoedaSemDecimal(parseFloat(value))}
+        />
+
         {
           despesas.length === 0 ?
             <AppTitle text={"Nenhuma despesa cadastrada"}/> :

@@ -1,15 +1,15 @@
 import {styles} from './LimitStyle';
 import {ScrollView, Text, View} from 'react-native';
 import AppMoneyInput from "../../component/appMoneyInput/AppMoneyInput";
+import * as React from "react";
 import {useEffect, useState} from "react";
 import AppSelectMesAnoInput from "../../component/appSelectMesAnoInput/AppSelectMesAnoInput";
 import {getAnoAtual, getMesAtual, MESES} from '../../services/utils'
 import AppTitle from "../../component/appTitle/AppTitle";
 import AppPressable from "../../component/appPressable/AppPressable";
 import AppLimiteCard from "../../component/appLimiteCard/AppLimiteCard";
-import {getLimitePorMes, salvarLimite, removerLimite} from "../../services/limiteService";
+import {getLimitePorMes, removerLimite, salvarLimite} from "../../services/limiteService";
 import AppRemoverModal from "../../component/appRemoverModal/AppRemoverModal";
-import * as React from "react";
 
 export default function Limit() {
 

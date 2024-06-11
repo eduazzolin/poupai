@@ -25,6 +25,7 @@
     "react-native": "0.74.1",
     "react-native-currency-input": "^1.1.1",
     "react-native-gifted-charts": "^1.4.10",
+    "react-native-linear-gradient": "^2.8.3",
     "typescript": "~5.3.3"
   },
   "devDependencies": {

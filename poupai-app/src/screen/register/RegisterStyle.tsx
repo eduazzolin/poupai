@@ -10,9 +10,23 @@ export const styles = StyleSheet.create({
         gap: 30,
       },
 
-      register: {
-        color: 'blue',
-        textDecorationLine: 'underline',
+      label: {
         fontSize: 16,
-      }
+        fontWeight: 'bold',
+        marginBottom: 8,
+        marginTop: 16,
+      },
+
+      dateInput: {
+        paddingVertical: 12,
+        paddingHorizontal: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        fontSize: 16,
+        color: '#333',
+        textAlign: 'center',
+        marginBottom: 16,
+      },
+
 });

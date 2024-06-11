@@ -1,12 +1,11 @@
 import { styles } from "./RegisterStyle";
-import { Text, View, Alert } from "react-native";
+import { Text, View, Alert, TouchableOpacity } from "react-native";
 import AppTitle from "../../component/appTitle/AppTitle";
 import AppTextInput from "../../component/appTextInput/AppTextInput";
-import AppSelectMesAnoInput from "../../component/appSelectMesAnoInput/AppSelectMesAnoInput";
-import { getAnoAtual, getMesAtual, MESES } from "../../services/utils";
 import { useState } from "react";
 import AppPressable from "../../component/appPressable/AppPressable";
 import { cadastrarUsuario } from "../../services/usuarioService";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function Register({ navigation }) {
   const [email, setEmail] = useState("");
@@ -29,8 +28,7 @@ export default function Register({ navigation }) {
       email: email,
       senha: senha,
       nome: nome,
-        mes: mesCadastro,
-        ano: anoCadastro
+      dataNascimento: data,
     };
     const response = await cadastrarUsuario(usuario);
     if (response.id != null) {
@@ -41,10 +39,9 @@ export default function Register({ navigation }) {
     }
   };
 
-  const [mesCadastro, setMesCadastro] = useState(getMesAtual());
-  const [anoCadastro, setAnoCadastro] = useState(getAnoAtual());
-  const mesListaCadastro = MESES;
-  const anoListaCadastro = ["2021", "2022", "2023", "2024", "2025"];
+  const [data, setData] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
 
   return (
     <View style={styles.container}>
@@ -54,17 +51,27 @@ export default function Register({ navigation }) {
         placeholder="Digite seu nome"
         onValueChange={setNome}
       />
-      <AppSelectMesAnoInput
-        label={"Período"}
-        editable={true}
-        mes={mesCadastro}
-        mesLista={mesListaCadastro}
-        onMesChange={setMesCadastro}
-        ano={anoCadastro}
-        anoLista={anoListaCadastro}
-        onAnoChange={setAnoCadastro}
-        bloquearDatasAnteriores={true}
-      />
+
+
+   <Text style={styles.label}>Data de Nascimento</Text>
+      <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+        <Text style={styles.dateInput}>
+          {data ? data.toLocaleDateString() : "Selecione a data de nascimento"}
+        </Text>
+      </TouchableOpacity>
+      {showDatePicker && (
+        <DateTimePicker
+          value={data || new Date()}
+          mode="date"
+          display="default"
+          onChange={(event, date) => {
+            setShowDatePicker(false);
+            if (date) {
+              setData(date);
+            }
+          }}
+        />
+      )}
 
       <AppTextInput
         label="Email"

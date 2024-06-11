@@ -15,7 +15,7 @@ export const postUsuario = async (entidade) => {
       throw new Error("Erro ao cadastrar usuário");
     }
   }
-  
+
 }
 
 export const postUsuarioLogin = async (entidade) => {
@@ -28,12 +28,14 @@ export const postUsuarioLogin = async (entidade) => {
 }
 
 export const cadastrarUsuario = async (entidade) => {
+  
   try {
     const response = await postUsuario(entidade);
     return response;
   } catch (error) {
     return error.message;
   }
+
 }
 
 export const loginUsuario = async (entidade) => {
@@ -44,6 +46,6 @@ export const loginUsuario = async (entidade) => {
   } catch (error) {
     return error.message;
   }
-  
 }
+
 

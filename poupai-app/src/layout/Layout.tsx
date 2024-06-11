@@ -18,8 +18,8 @@ export default function Layout() {
       <Tab.Navigator screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let localIcon;
-          if (route.name === 'Home') {
-            localIcon = focused ? 'home' : 'home-outline';
+          if (route.name === 'Meta') {
+            localIcon = focused ? 'cash' : 'cash-outline';
           } else if (route.name === 'Perfil') {
             localIcon = focused ? 'person' : 'person-outline';
           } else if (route.name === 'Limites') {
@@ -33,7 +33,7 @@ export default function Layout() {
 
       })}>
         <Tab.Screen name="Perfil" component={Profile} />
-        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen name="Meta" component={Home} />
         <Tab.Screen name="Despesas" component={Expense} />
         <Tab.Screen name="Limites" component={Limit} />
       </Tab.Navigator>

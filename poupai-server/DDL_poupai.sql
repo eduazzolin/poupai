@@ -3,7 +3,7 @@ CREATE DATABASE poupai;
 USE poupai;
 
 create table usuarios(
-	id int primary key not null,
+	id INT AUTO_INCREMENT PRIMARY KEY,
 	email varchar(255) unique not null,
 	nome varchar(255) not null,
 	senha varchar(255) not null,

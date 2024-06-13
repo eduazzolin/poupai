@@ -21,13 +21,25 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(8080, () => {
-  console.log("Example app listening on port 8080!");
+  const logo = `
+
+░▒▓███████▓▒░ ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓███████▓▒░ ░▒▓██████▓▒░░▒▓█▓▒░       ░▒▓███████▓▒░▒▓████████▓▒░▒▓███████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░▒▓███████▓▒░  
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓███████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓███████▓▒░░▒▓████████▓▒░▒▓█▓▒░       ░▒▓██████▓▒░░▒▓██████▓▒░ ░▒▓███████▓▒░ ░▒▓█▓▒▒▓█▓▒░░▒▓██████▓▒░ ░▒▓███████▓▒░  
+░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░             ░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▓█▓▒░ ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░             ░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▓█▓▒░ ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░       ░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓███████▓▒░░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░  ░▒▓██▓▒░  ░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+listening on port 8080!                                                                                
+`
+
+  console.log(logo);
 });
 
 ////////////////
 
 app.post("/usuario", async (req, res) => {
-  const { email, senha, nome, dt_nascimento } = req.body;
+  const {email, senha, nome, dt_nascimento} = req.body;
   const exists = await database.existsUsuarioEmail(email);
   if (exists) return res.status(409).send("Email já cadastrado");
   const novoUsuario = await database.insertUsuario(
@@ -47,27 +59,27 @@ app.post("/login", async (req, res, next) => {
   if (!usuario) return res.status(401).send("No user found.");
   const id = usuario.id;
 
-  const token = jwt.sign({ id }, process.env.SECRET, {
+  const token = jwt.sign({id}, process.env.SECRET, {
     expiresIn: 1000 * 60 * 60 * 24,
   });
 
-  return res.json({ auth: true, token: token });
+  return res.json({auth: true, token: token});
 });
 
 app.post("/logout", function (req, res) {
-  res.json({ auth: false, token: null });
+  res.json({auth: false, token: null});
 });
 
 function verifyJWT(req, res, next) {
   const token = req.headers.authorization.split(" ")[1];
   if (!token)
-    return res.status(401).json({ auth: false, message: "No token provided." });
+    return res.status(401).json({auth: false, message: "No token provided."});
 
   jwt.verify(token, process.env.SECRET, function (err, decoded) {
     if (err)
       return res
         .status(500)
-        .json({ auth: false, message: err + " Failed to authenticate token." });
+        .json({auth: false, message: err + " Failed to authenticate token."});
 
     req.userId = decoded.id;
     next();
@@ -75,7 +87,7 @@ function verifyJWT(req, res, next) {
 }
 
 app.post("/despesas", verifyJWT, async (req, res) => {
-  const { descricao, valor, mes, ano, icone } = req.body;
+  const {descricao, valor, mes, ano, icone} = req.body;
   const novoDespesa = await database.insertDespesa(
     descricao,
     valor,
@@ -94,7 +106,7 @@ function tratarDespesas(despesas) {
 }
 
 app.get("/despesas/", verifyJWT, async (req, res) => {
-  const { mes, ano } = req.query;
+  const {mes, ano} = req.query;
   if (!mes && !ano) {
     const despesas = await database.getDespesaByUsuario(req.userId);
     tratarDespesas(despesas);
@@ -118,7 +130,7 @@ app.delete("/despesas/:id", verifyJWT, async (req, res) => {
 
 app.put("/despesas/:id", verifyJWT, async (req, res) => {
   const id = req.params.id;
-  const { descricao, valor, mes, ano, icone } = req.body;
+  const {descricao, valor, mes, ano, icone} = req.body;
   const despesa = await database.updateDespesa(
     id,
     descricao,
@@ -132,21 +144,26 @@ app.put("/despesas/:id", verifyJWT, async (req, res) => {
 });
 
 app.get("/total/", verifyJWT, async (req, res) => {
-  const { mes, ano } = req.query;
-  const total = await database.getValorTotalById(mes, ano, req.userId);
+  const {mes, ano} = req.query;
+  let total = await database.getValorTotalById(mes, ano, req.userId);
+  if (!total) {
+    total = {TOTAL: 0};
+  }
   total.TOTAL = parseFloat(total.TOTAL);
   res.send(total);
 })
 
 app.get("/limites/", verifyJWT, async (req, res) => {
-  const { mes, ano } = req.query;
+  const {mes, ano} = req.query;
   const limites = await database.getLimiteByUsuarioMesAno(req.userId, mes, ano);
-  limites.valor = parseFloat(limites.valor)
-  res.send(limites);
+  if (limites) {
+    limites.valor = parseFloat(limites.valor)
+  }
+  res.send([limites]);
 })
 
 app.post("/limites/", verifyJWT, async (req, res) => {
-  const { valor, mes, ano } = req.body;
+  const {valor, mes, ano} = req.body;
   const novoLimite = await database.insertLimit(
     valor,
     mes,
@@ -164,7 +181,7 @@ app.delete("/limites/:id", verifyJWT, async (req, res) => {
 
 app.put("/limites/:id", verifyJWT, async (req, res) => {
   const id = req.params.id;
-  const { valor, mes, ano } = req.body;
+  const {valor, mes, ano} = req.body;
   const limite = await database.updateLimite(
     id,
     valor,

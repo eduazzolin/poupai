@@ -1,5 +1,5 @@
 import {styles} from './LimitStyle';
-import {ScrollView, Text, View} from 'react-native';
+import {ScrollView, Text, View, ToastAndroid} from 'react-native';
 import AppMoneyInput from "../../component/appMoneyInput/AppMoneyInput";
 import * as React from "react";
 import {useEffect, useState} from "react";
@@ -47,7 +47,7 @@ export default function Limit() {
   const mountPage = async () => {
     try {
       const limite = await getLimitePorMes(mesConsulta, anoConsulta)
-      setLimiteConsulta(limite)
+      setLimiteConsulta(limite.length > 0 ? limite[0] : limite)
       setErro("")
     } catch (error) {
       setLimiteConsulta(null)
@@ -111,9 +111,10 @@ export default function Limit() {
     setModalRemoverVisible(false)
     try {
       await removerLimite(limiteRemocaoId)
+      ToastAndroid.show("Limite removido com sucesso", ToastAndroid.SHORT)
       mountPage()
     } catch (error) {
-      console.log("Erro ao remover limite", error)
+      setErro(error.message)
     }
   }
   const handleEditarLimite = (limiteObjeto) => {
@@ -124,6 +125,7 @@ export default function Limit() {
     const limiteObjeto = montarLimiteObjeto()
     try {
       await salvarLimite(limiteObjeto)
+      ToastAndroid.show("Limite salvo com sucesso", ToastAndroid.SHORT)
       incorporarLimiteObjeto(null)
       mountPage()
     } catch (error) {

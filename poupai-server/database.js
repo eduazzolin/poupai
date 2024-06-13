@@ -49,6 +49,11 @@ export async function getDespesaByUsuario(usuario) {
   return rows
 }
 
+async function existLimiteByUsuarioMesAno(usuario, mes, ano) {
+  const [rows] =  await pool.query(`SELECT * FROM LIMITES WHERE USUARIO_ID = ? AND MES = ? AND ANO = ?`, [usuario, mes, ano])
+  return rows[0] != null
+}
+
 export async function removeDespesa(id) { 
   const [rows] =  await pool.query(`DELETE FROM DESPESAS WHERE ID = ?`, [id])
   return rows[0]
@@ -65,6 +70,9 @@ export async function getValorTotalById(mes, ano, usuario_id) {
 }
 
 export async function insertLimit(valor, mes, ano, usuario_id) {
+  if (await existLimiteByUsuarioMesAno(usuario_id, mes, ano)) {
+    throw new Error('Limite já cadastrado')
+  }
   const [rows] = await pool.query(`INSERT INTO LIMITES (VALOR, MES, ANO, USUARIO_ID) VALUES (?, ?, ?, ?)`, [valor, mes, ano, usuario_id])
   const id = rows.insertId
   return getLimiteById(id)

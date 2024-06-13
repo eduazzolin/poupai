@@ -1,9 +1,9 @@
 import {isMesAnoIgualOuPosteriorADataAtual} from "./utils";
-import {url} from "./apiBase";
+import {url, getToken} from "./apiBase";
 import axios from "axios";
 
 export const getLimitePorMes = async (mes, ano) => {
-  const userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4MDY1MjQyLCJleHAiOjE4MDQ0NjUyNDJ9.OYbV-R95NkOGLMposvwlb45MEGkNRo_PIcfJSW6pHj0'
+  const userToken = await getToken();
   const reqUrl = `${url}/limites?mes=${mes}&ano=${ano}`;
   try {
     const response = await axios.get(reqUrl, {
@@ -11,27 +11,63 @@ export const getLimitePorMes = async (mes, ano) => {
         Authorization: 'Bearear ' + userToken
       }
     });
-    return response ? response.data : null;
+    return response ? response.data : [];
   } catch (e) {
-    throw new Error("Erro ao buscar limite");
+    throw new Error("Erro ao buscar limites");
   }
 };
 
 
 export const salvarLimite = async (limite) => {
-  validarLimite(limite)
+  await validarLimite(limite)
+  const userToken = await getToken();
   if (limite.id) {
-    console.log("Atualizando limite", limite)
+    const reqUrl = `${url}/limites/${limite.id}`;
+    try {
+      const response = await axios.put(reqUrl, limite, {
+        headers: {
+          Authorization: 'Bearear ' + userToken
+        }
+      });
+    } catch (e) {
+      throw new Error("Erro ao atualizar limite");
+    }
   } else {
-    console.log("Inserindo limite", limite)
+    const reqUrl = `${url}/limites`;
+    try {
+      const response = await axios.post(reqUrl, limite, {
+        headers: {
+          Authorization: 'Bearear ' + userToken
+        }
+      });
+    } catch (e) {
+      throw new Error("Erro ao salvar limite");
+    }
   }
 }
 
 export const removerLimite = async (id) => {
-  console.log("Removendo limite", id)
+  const userToken = await getToken();
+  const reqUrl = `${url}/limites/${id}`;
+  try {
+    const response = await axios.delete(reqUrl, {
+      headers: {
+        Authorization: 'Bearear ' + userToken
+      }
+    });
+  } catch (e) {
+    throw new Error("Erro ao remover limite");
+  }
 }
 
-export const validarLimite = (limite) => {
+export const validarLimite = async (limite) => {
+  if (!limite.id) {
+    const limiteResponse = await getLimitePorMes(limite.mes, limite.ano)
+    if (limiteResponse.length > 0 && limiteResponse[0] != null) {
+      console.log("limiteResponse", limiteResponse)
+      throw new Error("Já existe um limite para este mês e ano")
+    }
+  }
 
   if (!limite.valor) {
     throw new Error("Valor do limite é obrigatório")

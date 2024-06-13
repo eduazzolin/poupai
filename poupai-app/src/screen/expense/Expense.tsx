@@ -1,5 +1,5 @@
 import {styles} from './ExpenseStyle';
-import {ScrollView, Text, View} from 'react-native';
+import {ScrollView, Text, View, ToastAndroid} from 'react-native';
 import AppTitle from "../../component/appTitle/AppTitle";
 import AppMoneyInput from "../../component/appMoneyInput/AppMoneyInput";
 import AppTextInput from "../../component/appTextInput/AppTextInput";
@@ -162,6 +162,7 @@ export default function Expense() {
     setModalRemoverVisible(false)
     try {
       await removerDespesa(despesaRemocaoId)
+      ToastAndroid.show("Despesa removida com sucesso", ToastAndroid.SHORT)
       mountPage()
     } catch (error) {
       console.log("Erro ao remover despesa", error)
@@ -178,6 +179,7 @@ export default function Expense() {
     const despesaObjeto = montarDespesaObjeto();
     try {
       await salvarDespesa(despesaObjeto)
+      ToastAndroid.show("Despesa salva com sucesso", ToastAndroid.SHORT)
       incorporarDespesaObjeto(null)
       mountPage()
     } catch (error) {

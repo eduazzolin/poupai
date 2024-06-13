@@ -19,105 +19,46 @@ export const getDespesasPorMes = async (mes, ano) => {
   }
 }
 
-
-export const getDespesasPorMesOld = async (mes, ano) => {
-  console.log("Buscando despesas por mes", mes, ano)
-
-  return ano == 2024 ? [
-    {
-      descricao: "Aluguel",
-      valor: 1000,
-      id: 1,
-      icone: "home",
-      mes: 8,
-      ano: 2024
-    },
-    {
-      descricao: "Mercado",
-      valor: 1000,
-      id: 2,
-      icone: "cart",
-      mes: 8,
-      ano: 2024
-    },
-    {
-      descricao: "Academia",
-      valor: 100,
-      id: 3,
-      icone: "barbell",
-      mes: 8,
-      ano: 2024
-    },
-    {
-      descricao: "Jogos",
-      valor: 100,
-      id: 4,
-      icone: "game-controller",
-      mes: 8,
-      ano: 2024
-    },
-    {
-      descricao: "Mercado",
-      valor: 25.5,
-      id: 5,
-      icone: "cart",
-      mes: 8,
-      ano: 2024
-    },
-    {
-      descricao: "Mercado",
-      valor: 10,
-      id: 6,
-      icone: "cart",
-      mes: 8,
-      ano: 2024
-    },
-    {
-      descricao: "Luz",
-      valor: 200,
-      id: 7,
-      icone: "bulb",
-      mes: 8,
-      ano: 2024
-    },
-    {
-      descricao: "Água",
-      valor: 100,
-      id: 8,
-      icone: "water",
-      mes: 8,
-      ano: 2024
-    },
-    {
-      descricao: "Internet",
-      valor: 100,
-      id: 9,
-      icone: "wifi",
-      mes: 8,
-      ano: 2024
-    },
-    {
-      descricao: "Telefone",
-      valor: 50,
-      id: 10,
-      icone: "call",
-      mes: 8,
-      ano: 2024
-    }
-  ] : [];
-}
-
 export const salvarDespesa = async (despesa) => {
   validarDespesa(despesa)
+  const userToken = await getToken();
   if (despesa.id) {
-    console.log("Atualizando despesa", despesa)
+    const reqUrl = `${url}/despesas/${despesa.id}`;
+    try {
+      await axios.put(reqUrl, despesa, {
+        headers: {
+          Authorization: 'Bearear ' + userToken
+        }
+      });
+    } catch (e) {
+      throw new Error("Erro ao atualizar despesa");
+    }
   } else {
-    console.log("Inserindo despesa", despesa)
+    const reqUrl = `${url}/despesas`;
+    try {
+      await axios.post(reqUrl, despesa, {
+        headers: {
+          Authorization: 'Bearear ' + userToken
+        }
+      });
+    } catch (e) {
+      throw new Error("Erro ao salvar despesa");
+    }
   }
 }
 
 export const removerDespesa = async (id) => {
-  console.log("Removendo despesa", id)
+  const userToken = await getToken();
+  const reqUrl = `${url}/despesas/${id}`;
+  try {
+    await axios.delete(reqUrl, {
+      headers: {
+        Authorization: 'Bearear ' + userToken
+      }
+    });
+  } catch (e) {
+    throw new Error("Erro ao remover despesa");
+  }
 }
 
 export const validarDespesa = (despesa) => {

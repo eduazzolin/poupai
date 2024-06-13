@@ -12,23 +12,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.send("Hello aoba!");
-});
-
-app.get("/items", verifyJWT, async (req, res) => {
-  const senhas = await database.getSenhasById(req.userId);
-  res.send(senhas);
-});
-
-app.get("/item/:id", verifyJWT, async (req, res) => {
-  const id = req.params.id;
-  const senha = await database.getSenha(id, req.userId);
-  res.send(senha);
-});
-app.delete("/item/:id", verifyJWT, async (req, res) => {
-  const id = req.params.id;
-  const senha = await database.removeSenha(id, req.userId);
-  res.send(senha);
+  res.send("Espinafre, oba!");
 });
 
 app.use((err, req, res, next) => {
@@ -103,10 +87,17 @@ app.post("/despesas", verifyJWT, async (req, res) => {
   res.status(201).send(novoDespesa);
 });
 
+function tratarDespesas(despesas) {
+  despesas.forEach((despesa) => {
+    despesa.valor = parseFloat(despesa.valor);
+  });
+}
+
 app.get("/despesas/", verifyJWT, async (req, res) => {
   const { mes, ano } = req.query;
   if (!mes && !ano) {
     const despesas = await database.getDespesaByUsuario(req.userId);
+    tratarDespesas(despesas);
     res.send(despesas);
   } else {
     const despesas = await database.getDespesaByUsuarioMesAno(
@@ -114,6 +105,7 @@ app.get("/despesas/", verifyJWT, async (req, res) => {
       mes,
       ano
     );
+    tratarDespesas(despesas);
     res.send(despesas);
   }
 });
@@ -142,6 +134,7 @@ app.put("/despesas/:id", verifyJWT, async (req, res) => {
 app.get("/total/", verifyJWT, async (req, res) => {
   const { mes, ano } = req.query;
   const total = await database.getValorTotalById(mes, ano, req.userId);
+  total.TOTAL = parseFloat(total.TOTAL);
   res.send(total);
 })
 

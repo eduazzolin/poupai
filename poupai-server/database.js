@@ -3,7 +3,7 @@ import mysql from 'mysql2'
 const pool = mysql.createPool({
   host: '127.0.0.1',
   user: 'root',
-  password: 'root',
+  password: 'admin',
   database: 'poupai'
 }).promise()
 
@@ -40,7 +40,6 @@ export async function getDespesaById(id) {
 }
 
 export async function getDespesaByUsuarioMesAno(usuario, mes, ano) {
-  console.log (usuario, mes, ano)
   const [rows] =  await pool.query(`SELECT * FROM DESPESAS WHERE USUARIO_ID = ? AND MES = ? AND ANO = ?`, [usuario, mes, ano])
   return rows
 }

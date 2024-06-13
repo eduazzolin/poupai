@@ -1,6 +1,26 @@
 import {isMesAnoIgualOuPosteriorADataAtual} from "./utils";
+import {url, getToken} from "./apiBase";
+import axios from "axios";
 
 export const getDespesasPorMes = async (mes, ano) => {
+  const userToken = await getToken();
+  const reqUrl = `${url}/despesas?mes=${mes}&ano=${ano}`;
+  try {
+    const response = await axios.get(reqUrl, {
+      headers: {
+        Authorization: 'Bearear ' + userToken
+      }
+    });
+
+    console.log("response", response.data)
+    return response ? response.data : [];
+  } catch (e) {
+    throw new Error("Erro ao buscar despesas");
+  }
+}
+
+
+export const getDespesasPorMesOld = async (mes, ano) => {
   console.log("Buscando despesas por mes", mes, ano)
 
   return ano == 2024 ? [
@@ -124,7 +144,7 @@ export const validarDespesa = (despesa) => {
     throw new Error("Ano é obrigatório")
   }
 
-  if(!isMesAnoIgualOuPosteriorADataAtual(despesa.mes, despesa.ano)){
+  if (!isMesAnoIgualOuPosteriorADataAtual(despesa.mes, despesa.ano)) {
     throw new Error("Mês e ano devem ser iguais ou posteriores a data atual")
   }
 

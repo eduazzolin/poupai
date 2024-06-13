@@ -1,15 +1,22 @@
 import {isMesAnoIgualOuPosteriorADataAtual} from "./utils";
+import {url} from "./apiBase";
+import axios from "axios";
 
 export const getLimitePorMes = async (mes, ano) => {
-  console.log("Buscando limite por mes", mes, ano)
+  const userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4MDY1MjQyLCJleHAiOjE4MDQ0NjUyNDJ9.OYbV-R95NkOGLMposvwlb45MEGkNRo_PIcfJSW6pHj0'
+  const reqUrl = `${url}/limites?mes=${mes}&ano=${ano}`;
+  try {
+    const response = await axios.get(reqUrl, {
+      headers: {
+        Authorization: 'Bearear ' + userToken
+      }
+    });
+    return response ? response.data : null;
+  } catch (e) {
+    throw new Error("Erro ao buscar limite");
+  }
+};
 
-  return ano == 2024 ? {
-    valor: 1650.50,
-    id: 1,
-    mes: mes,
-    ano: ano
-  } : null;
-}
 
 export const salvarLimite = async (limite) => {
   validarLimite(limite)

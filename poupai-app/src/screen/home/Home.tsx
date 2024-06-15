@@ -5,7 +5,6 @@ import {getAnoAtual, getMesAtual, MESES} from "../../services/utils";
 import AppSelectMesAnoInput from "../../component/appSelectMesAnoInput/AppSelectMesAnoInput";
 import {getLimitePorMes, getLimiteValorPorMes} from "../../services/limiteService";
 import {getDespesasPorMes, getTotalMes} from "../../services/despesaService";
-import {getUsuario} from "../../services/usuarioService";
 
 export default function Home() {
   const [mesConsulta, setMesConsulta] = useState(getMesAtual());
@@ -21,10 +20,8 @@ export default function Home() {
     try {
       const response_limite = await getLimiteValorPorMes(mesConsulta, anoConsulta)
       const response_total = await getTotalMes(mesConsulta, anoConsulta)
-      const response_usuario = await getUsuario()
       setMeta(response_limite)
       setProgresso(response_total)
-      setUsuario(response_usuario)
     } catch (error) {
       console.log("Erro ao buscar dados", error)
     }

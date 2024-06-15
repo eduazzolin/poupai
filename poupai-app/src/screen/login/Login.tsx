@@ -1,14 +1,13 @@
-import { styles } from "./LoginStyle";
-import { Text, View, Alert } from "react-native";
+import {styles} from "./LoginStyle";
+import {Alert, Text, View} from "react-native";
 import AppTextInput from "../../component/appTextInput/AppTextInput";
-import React from "react";
+import React, {useState} from "react";
 import AppTitle from "../../component/appTitle/AppTitle";
-import { useState } from "react";
 import AppPressable from "../../component/appPressable/AppPressable";
-import { loginUsuario } from "../../services/usuarioService";
+import {loginUsuario, postUsuarioAsyncStorage} from "../../services/usuarioService";
 
 
-export default function Login({ navigation}) {
+export default function Login({navigation}) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
@@ -17,26 +16,25 @@ export default function Login({ navigation}) {
       alert("Preencha todos os campos");
       return;
     }
-  
+
     const user = {
       email: email,
       senha: senha,
     };
     try {
       const response = await loginUsuario(user);
-      console.log(response);
       if (response.token) {
-       
         Alert.alert("Login realizado com sucesso");
-        navigation.replace('Main'); 
+        await postUsuarioAsyncStorage(response)
+        navigation.replace('Main');
       } else {
         Alert.alert("Erro no login", response.message);
       }
     } catch (error) {
-      Alert.alert("Erro no login", error.message || "Erro desconhecido");
+      Alert.alert("Erro no login", "Erro no login");
     }
   };
-  
+
 
   const register = () => {
     navigation.replace('Register');
@@ -50,25 +48,25 @@ export default function Login({ navigation}) {
     setSenha(value);
   };
 
-    return (
-      <View style={styles.container}>
-        <AppTitle text="Login" />
-        <AppTextInput
-          label="Email"
-          placeholder="Digite seu email"
-          onValueChange={handleChangeEmail}
-        />
-        <AppTextInput
-          label="Senha"
-          placeholder="Digite sua senha"
-          onValueChange={handleChangeSenha}
-        />
+  return (
+    <View style={styles.container}>
+      <AppTitle text="Login"/>
+      <AppTextInput
+        label="Email"
+        placeholder="Digite seu email"
+        onValueChange={handleChangeEmail}
+      />
+      <AppTextInput
+        label="Senha"
+        placeholder="Digite sua senha"
+        onValueChange={handleChangeSenha}
+      />
 
-        <AppPressable text="Entrar" action={handleLogin} />
+      <AppPressable text="Entrar" action={handleLogin}/>
 
-        <Text style={styles.register} onPress={register}>Cadastre-se</Text>
-      </View>
+      <Text style={styles.register} onPress={register}>Cadastre-se</Text>
+    </View>
 
-      
-    );
+
+  );
 }

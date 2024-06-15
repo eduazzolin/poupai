@@ -3,8 +3,9 @@ import {Text, View} from "react-native";
 import {styles} from "./HomeStyle";
 import {getAnoAtual, getMesAtual, MESES} from "../../services/utils";
 import AppSelectMesAnoInput from "../../component/appSelectMesAnoInput/AppSelectMesAnoInput";
-import {getLimitePorMes, getLimiteValorPorMes} from "../../services/limiteService";
-import {getDespesasPorMes, getTotalMes} from "../../services/despesaService";
+import {getLimiteValorPorMes} from "../../services/limiteService";
+import {getTotalMes} from "../../services/despesaService";
+import {getUsuarioAsyncStorage} from "../../services/usuarioService";
 
 export default function Home() {
   const [mesConsulta, setMesConsulta] = useState(getMesAtual());
@@ -20,8 +21,10 @@ export default function Home() {
     try {
       const response_limite = await getLimiteValorPorMes(mesConsulta, anoConsulta)
       const response_total = await getTotalMes(mesConsulta, anoConsulta)
+      const usuario_logado = await getUsuarioAsyncStorage()
       setMeta(response_limite)
       setProgresso(response_total)
+      setUsuario(usuario_logado)
     } catch (error) {
       console.log("Erro ao buscar dados", error)
     }
@@ -48,7 +51,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.greeting}>Olá NOME AQUI!!</Text>
+        <Text style={styles.greeting}>Olá {usuario.nome}!!</Text>
       </View>
       <View style={styles.selectContainer}>
         <AppSelectMesAnoInput

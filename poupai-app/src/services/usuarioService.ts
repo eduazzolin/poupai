@@ -41,10 +41,27 @@ export const loginUsuario = async (usuario) => {
   try {
     const reqUrl = `${url}/login`;
     const response = await axios.post(reqUrl, usuario);
+
     return response.data;
   } catch (error) {
     console.error('Erro ao fazer login:', error);
-    return {error: error.response?.data || 'Erro desconhecido'};
   }
 };
 
+export const postUsuarioAsyncStorage = async (usuario) => {
+  try {
+    await AsyncStorage.setItem('usuario', JSON.stringify(usuario));
+    await AsyncStorage.setItem('token', usuario.token);
+  } catch (error) {
+    console.error('Erro ao salvar usuário no AsyncStorage:', error);
+  }
+}
+
+export const getUsuarioAsyncStorage = async () => {
+  try {
+    const usuario = await AsyncStorage.getItem('usuario');
+    return JSON.parse(usuario);
+  } catch (error) {
+    console.error('Erro ao buscar usuário no AsyncStorage:', error);
+  }
+}

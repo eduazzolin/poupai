@@ -9,11 +9,16 @@ import {getUsuarioAsyncStorage} from "../../services/usuarioService";
 
 export default function Profile() {
 
-  const [usuario, setUsuario] = useState(null);
+  const [usuario, setUsuario] = useState({
+    nome: "",
+    email: "",
+    dt_nascimento: ""
+  });
 
   const mountPage = async () => {
     try {
       const usuario_logado = await getUsuarioAsyncStorage()
+      console.log(usuario_logado)
       setUsuario(usuario_logado)
     } catch (error) {
       console.log("Erro ao buscar dados", error)
@@ -22,6 +27,7 @@ export default function Profile() {
   useEffect(() => {
     mountPage();
   }, []);
+
 
   return (
     <View style={styles.container}>

@@ -15,7 +15,11 @@ export default function Home() {
 
   const [progresso, setProgresso] = useState(0);
   const [meta, setMeta] = useState(0);
-  const [usuario, setUsuario] = useState(null);
+  const [usuario, setUsuario] = useState({
+    nome: "",
+    email: "",
+    dt_nascimento: "",
+  });
 
   const mountPage = async () => {
     try {

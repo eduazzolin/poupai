@@ -1,6 +1,6 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {url, getToken} from "./apiBase";
+import {url} from "./apiBase";
 
 export const postUsuario = async (entidade) => {
   try {
@@ -41,7 +41,7 @@ export const loginUsuario = async (usuario) => {
   try {
     const reqUrl = `${url}/login`;
     const response = await axios.post(reqUrl, usuario);
-
+    console.log('response.data:', response.data)
     return response.data;
   } catch (error) {
     console.log('Erro ao fazer login:', error);
@@ -50,7 +50,9 @@ export const loginUsuario = async (usuario) => {
 
 export const postUsuarioAsyncStorage = async (usuario) => {
   try {
-    await AsyncStorage.setItem('usuario', JSON.stringify(usuario));
+    // formata data de nascimento de "dt_nascimento": "1997-06-15T03:00:00.000Z" para dd/mm/yyy
+    usuario.usuario.dt_nascimento = usuario.usuario.dt_nascimento.split('T')[0].split('-').reverse().join('/');
+    await AsyncStorage.setItem('usuario', JSON.stringify(usuario.usuario));
     await AsyncStorage.setItem('token', usuario.token);
   } catch (error) {
     console.log('Erro ao salvar usuário no AsyncStorage:', error);

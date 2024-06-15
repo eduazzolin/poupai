@@ -28,7 +28,7 @@ export default function Register({ navigation }) {
       email: email,
       senha: senha,
       nome: nome,
-      dataNascimento: data,
+      dt_nascimento: data,
     };
     const response = await cadastrarUsuario(usuario);
     if (response.id != null) {

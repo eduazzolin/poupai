@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {url, getToken} from "./apiBase";
 
 export const postUsuario = async (entidade) => {
-
   try {
     const response = await axios.post(`${url}/usuario`, entidade);
     return response.data;
@@ -27,13 +26,14 @@ export const postUsuarioLogin = async (entidade) => {
 }
 
 export const cadastrarUsuario = async (usuario) => {
+  usuario.dt_nascimento = usuario.dt_nascimento.toISOString().split('T')[0];
   try {
     const reqUrl = `${url}/usuario`;
     const response = await axios.post(reqUrl, usuario);
     return response.data;
   } catch (error) {
     console.error('Erro ao cadastrar usuário:', error);
-    return { error: error.response?.data || 'Erro desconhecido' };
+    return {error: error.response?.data || 'Erro desconhecido'};
   }
 };
 

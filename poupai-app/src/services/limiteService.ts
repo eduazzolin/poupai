@@ -26,13 +26,13 @@ export const getLimiteValorPorMes = async (mes, ano) => {
         Authorization: 'Bearear ' + userToken
       }
     });
-    if(response.data.length > 0) {
+    if(response.data.length > 0 && response.data[0] != null) {
       return response.data[0].valor;
     } else {
       return 0;
     }
   } catch (e) {
-    throw new Error("Erro ao buscar limites");
+    console.log("Erro ao buscar limites", e)
   }
 };
 

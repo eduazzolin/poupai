@@ -11,7 +11,6 @@ export const getDespesasPorMes = async (mes, ano) => {
         Authorization: 'Bearear ' + userToken
       }
     });
-    console.log(response.data)
     return response ? response.data : [];
   } catch (e) {
     throw new Error("Erro ao buscar despesas");

@@ -51,6 +51,9 @@ app.post("/usuario", async (req, res) => {
   res.status(201).send(novoUsuario);
 });
 
+
+
+
 //authentication
 app.post("/login", async (req, res, next) => {
   const email = req.body.email;
@@ -59,11 +62,13 @@ app.post("/login", async (req, res, next) => {
   if (!usuario) return res.status(401).send("No user found.");
   const id = usuario.id;
 
+
   const token = jwt.sign({id}, process.env.SECRET, {
     expiresIn: 1000 * 60 * 60 * 24,
   });
 
-  return res.json({auth: true, token: token});
+  usuario.senha = undefined;
+  return res.json({auth: true, token: token, usuario: usuario});
 });
 
 app.post("/logout", function (req, res) {
@@ -88,6 +93,7 @@ function verifyJWT(req, res, next) {
 
 app.post("/despesas", verifyJWT, async (req, res) => {
   const {descricao, valor, mes, ano, icone} = req.body;
+  console.log(req.userId)
   const novoDespesa = await database.insertDespesa(
     descricao,
     valor,

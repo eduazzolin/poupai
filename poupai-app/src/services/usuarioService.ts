@@ -32,7 +32,7 @@ export const cadastrarUsuario = async (usuario) => {
     const response = await axios.post(reqUrl, usuario);
     return response.data;
   } catch (error) {
-    console.error('Erro ao cadastrar usuário:', error);
+    console.log('Erro ao cadastrar usuário:', error);
     return {error: error.response?.data || 'Erro desconhecido'};
   }
 };
@@ -44,7 +44,7 @@ export const loginUsuario = async (usuario) => {
 
     return response.data;
   } catch (error) {
-    console.error('Erro ao fazer login:', error);
+    console.log('Erro ao fazer login:', error);
   }
 };
 
@@ -53,7 +53,7 @@ export const postUsuarioAsyncStorage = async (usuario) => {
     await AsyncStorage.setItem('usuario', JSON.stringify(usuario));
     await AsyncStorage.setItem('token', usuario.token);
   } catch (error) {
-    console.error('Erro ao salvar usuário no AsyncStorage:', error);
+    console.log('Erro ao salvar usuário no AsyncStorage:', error);
   }
 }
 
@@ -62,6 +62,6 @@ export const getUsuarioAsyncStorage = async () => {
     const usuario = await AsyncStorage.getItem('usuario');
     return JSON.parse(usuario);
   } catch (error) {
-    console.error('Erro ao buscar usuário no AsyncStorage:', error);
+    console.log('Erro ao buscar usuário no AsyncStorage:', error);
   }
 }

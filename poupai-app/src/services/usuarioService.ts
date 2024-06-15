@@ -37,14 +37,15 @@ export const cadastrarUsuario = async (usuario) => {
   }
 };
 
-export const loginUsuario = async (entidade) => {
+export const loginUsuario = async (usuario) => {
   try {
-    const response = await postUsuarioLogin(entidade);
-    await AsyncStorage.setItem("token", response.token);
-    return response;
+    const reqUrl = `${url}/login`;
+    const response = await axios.post(reqUrl, usuario);
+    return response.data;
   } catch (error) {
-    return error.message;
+    console.error('Erro ao fazer login:', error);
+    return {error: error.response?.data || 'Erro desconhecido'};
   }
-}
+};
 
 

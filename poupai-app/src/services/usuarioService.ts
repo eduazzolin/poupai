@@ -28,7 +28,8 @@ export const postUsuarioLogin = async (entidade) => {
 
 export const cadastrarUsuario = async (usuario) => {
   try {
-    const response = await axios.post('/usuario', usuario);
+    const reqUrl = `${url}/usuario`;
+    const response = await axios.post(reqUrl, usuario);
     return response.data;
   } catch (error) {
     console.error('Erro ao cadastrar usuário:', error);

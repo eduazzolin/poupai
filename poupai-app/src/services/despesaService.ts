@@ -11,12 +11,32 @@ export const getDespesasPorMes = async (mes, ano) => {
         Authorization: 'Bearear ' + userToken
       }
     });
-
-    console.log("response", response.data)
+    console.log(response.data)
     return response ? response.data : [];
   } catch (e) {
     throw new Error("Erro ao buscar despesas");
   }
+}
+
+export const getTotalMes = async (mes, ano) => {
+  const userToken = await getToken();
+  const reqUrl = `${url}/total?mes=${mes}&ano=${ano}`;
+  try {
+    const response = await axios.get(reqUrl, {
+      headers: {
+        Authorization: 'Bearear ' + userToken
+      }
+    });
+    if (response && response.data.TOTAL != null) {
+      return response.data.TOTAL;
+    } else {
+      return 0;
+    }
+  } catch (e) {
+    console.log(e)
+    throw new Error("Erro ao buscar total de despesas");
+  }
+
 }
 
 export const salvarDespesa = async (despesa) => {

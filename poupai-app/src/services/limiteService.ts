@@ -17,6 +17,25 @@ export const getLimitePorMes = async (mes, ano) => {
   }
 };
 
+export const getLimiteValorPorMes = async (mes, ano) => {
+  const userToken = await getToken();
+  const reqUrl = `${url}/limites?mes=${mes}&ano=${ano}`;
+  try {
+    const response = await axios.get(reqUrl, {
+      headers: {
+        Authorization: 'Bearear ' + userToken
+      }
+    });
+    if(response.data.length > 0) {
+      return response.data[0].valor;
+    } else {
+      return 0;
+    }
+  } catch (e) {
+    throw new Error("Erro ao buscar limites");
+  }
+};
+
 
 export const salvarLimite = async (limite) => {
   await validarLimite(limite)

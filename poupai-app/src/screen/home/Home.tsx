@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { Text, View } from "react-native";
-import { styles } from "./HomeStyle";
-import { getAnoAtual, getMesAtual, MESES } from "../../services/utils";
+import React, {useEffect, useState} from "react";
+import {Text, View} from "react-native";
+import {styles} from "./HomeStyle";
+import {getAnoAtual, getMesAtual, MESES} from "../../services/utils";
 import AppSelectMesAnoInput from "../../component/appSelectMesAnoInput/AppSelectMesAnoInput";
+import {getLimitePorMes, getLimiteValorPorMes} from "../../services/limiteService";
+import {getDespesasPorMes, getTotalMes} from "../../services/despesaService";
 
 export default function Home() {
   const [mesConsulta, setMesConsulta] = useState(getMesAtual());
@@ -10,8 +12,23 @@ export default function Home() {
   const mesListaConsulta = MESES;
   const anoListaConsulta = ["2021", "2022", "2023", "2024", "2025"];
 
-  const progresso = 500;
-  const meta = 2000;
+  const [progresso, setProgresso] = useState(0);
+  const [meta, setMeta] = useState(0);
+
+  const mountPage = async () => {
+    try {
+      const response_limite = await getLimiteValorPorMes(mesConsulta, anoConsulta)
+      const response_total = await getTotalMes(mesConsulta, anoConsulta)
+      setMeta(response_limite)
+      setProgresso(response_total)
+    } catch (error) {
+      console.log("Erro ao buscar dados", error)
+    }
+  }
+
+  useEffect(() => {
+    mountPage();
+  }, [mesConsulta, anoConsulta]);
 
   let emoji = "😊";
   let message = "Você conseguiu";
@@ -55,7 +72,7 @@ export default function Home() {
         <Text style={styles.metaText}>{progresso} / {meta}</Text>
       </View>
       <View style={styles.progressBarContainer}>
-        <View style={[styles.progressBar, { width: `${(progresso / meta) * 100}%` }]}></View>
+        <View style={[styles.progressBar, {width: `${(progresso / meta) * 100}%`}]}></View>
       </View>
     </View>
   );

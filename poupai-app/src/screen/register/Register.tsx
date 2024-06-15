@@ -33,7 +33,7 @@ export default function Register({ navigation }) {
     const response = await cadastrarUsuario(usuario);
     if (response.id != null) {
       Alert.alert("Sucesso", "Usuário cadastrado com sucesso");
-      navigation.navigate("SignIn");
+      navigation.navigate("Login");
     } else {
       Alert.alert("Erro", response);
     }

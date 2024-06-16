@@ -1,5 +1,6 @@
-# poupaí
-Trabalho acadêmico com React Native - Senac 2024
+# Poupaí
+Trabalho acadêmico com React Native - Senac 2024 <br>
+Feito por [Eduardo Azzolin](https://github.com/eduazzolin), [Guilherme Caon](https://github.com/caon-guilherme) e [Pedro Cavallazzi](https://github.com/PedroCavallazzi)
 # Requisitos
 **O objetivo é criar um aplicativo para controle de despesas pessoais.** O usuário poderá cadastrar despesas e limites mensais, visualizar o resultado do mês e seu histórico de despesas. O aplicativo deverá ter autenticação de usuário e rotas privadas.
 ### Fluxo de sessão
@@ -33,115 +34,43 @@ Trabalho acadêmico com React Native - Senac 2024
 - Validar autenticação nas trocas de rota.
 - Validações antes de fazer requisição para o back-end.
 # endpoints
-### /usuarios
-#### 1. login
-- Método: POST
-- Endpoint: /login
-- Permissão: Público
-```json
-{
-    "email": "string",
-    "senha": "string"
-}
-```
-#### 2. cadastro
-- Método: POST
-- Endpoint: /cadastro
-- Permissão: Público
-```json
-{
-    "nome": "string",
-    "email": "string",
-    "senha": "string",
-    "dt_nascimento": "string"
-}
-```
-#### 3. listar
-- Método: GET
-- Endpoint: /:id
-- Permissão: Privado
-### /despesas
-#### 1. cadastro
-- Método: POST
-- Endpoint: /
-- Permissão: Privado
-```json
-{
-    "descricao": "string",
-    "valor": "number",
-    "mes": "number",
-    "ano": "number",
-    "usuario_id": "number",
-    "icone": "string"
-}
-```
-#### 2. listar por mês
-- Método: GET
-- Endpoint: /?mes=number?ano=number?usuario_id=number
-- Permissão: Privado
-#### 3. listar por usuario
-- Método: GET
-- Endpoint: /?usuario_id=number
-- Permissão: Privado
-#### 4. deletar
-- Método: DELETE
-- Endpoint: /:id
-- Permissão: Privado
-#### 5. atualizar
-- Método: PUT
-- Endpoint: /:id
-- Permissão: Privado
-```json
-{
-    "descricao": "string",
-    "valor": "number",
-    "mes": "number",
-    "ano": "number",
-    "usuario_id": "number",
-    "icone": "string"
-}
-```
-#### 6. valor total por mês
-- Método: GET
-- Endpoint: /total?mes=number?ano=number?usuario_id=number
-- Permissão: Privado
-- Retorno: number
-- Exemplo de SQL: `SELECT SUM(valor) FROM despesas WHERE mes_ano = '012024' AND usuario_id = 1;` 
-### /limites
-#### 1. cadastro
-- Método: POST
-- Endpoint: /
-- Permissão: Privado
-```json
-{
-    "valor": "number",
-    "mes": "number",
-    "ano": "number",
-    "usuario_id": "number"
-}
-```
-#### 2. listar por mês
-- Método: GET
-- Endpoint: /?mes=number?ano=number?usuario_id=number
-- Permissão: Privado
-#### 3. listar por usuario
-- Método: GET
-- Endpoint: /?usuario_id=number
-- Permissão: Privado
-#### 4. deletar
-- Método: DELETE
-- Endpoint: /:id
-- Permissão: Privado
-#### 5. atualizar
-- Método: PUT
-- Endpoint: /:id
-- Permissão: Privado
-```json
-{
-    "valor": "number",
-    "mes": "number",
-    "ano": "number",
-    "usuario_id": "number"
-}
-```
-
+### Usuário
+1. **POST** /usuario
+   - Cria um novo usuário
+   - Body: { nome, email, senha, dt_nascimento }
+2. **POST** /login
+   - Inicia sessão
+   - Body: { email, senha }
+3. **POST** /logout
+    - Encerra sessão
+### Despesas
+1. **GET** /despesas
+   - Retorna todas as despesas do usuário para o mês e ano informados
+   - Query: { mes, ano }
+2. **POST** /despesas
+   - Cria uma nova despesa
+   - Body: { descricao, valor, mes, ano, icone }
+3. **PUT** /despesas/:id
+    - Atualiza uma despesa
+    - Body: { descricao, valor, mes, ano, icone }
+    - Params: { id }
+4. **DELETE** /despesas/:id
+    - Deleta uma despesa
+    - Params: { id }
+5. **GET** /total
+    - Retorna o valor total de despesas do usuário para o mês e ano informados
+    - Query: { mes, ano }
+### Limites
+1. **GET** /limites
+   - Retorna o limite do usuário para o mês e ano informados
+   - Query: { mes, ano }
+2. **POST** /limites
+    - Cria um novo limite
+    - Body: { valor, mes, ano }
+3. **PUT** /limites/:id
+    - Atualiza um limite
+    - Body: { valor, mes, ano }
+    - Params: { id }
+4. **DELETE** /limites/:id
+    - Deleta um limite
+    - Params: { id }

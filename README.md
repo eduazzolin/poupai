@@ -3,6 +3,12 @@ Trabalho acadêmico com React Native - Senac 2024 <br>
 Feito por [Eduardo Azzolin](https://github.com/eduazzolin), [Guilherme Caon](https://github.com/caon-guilherme) e [Pedro Cavallazzi](https://github.com/PedroCavallazzi)
 # Requisitos
 **O objetivo é criar um aplicativo para controle de despesas pessoais.** O usuário poderá cadastrar despesas e limites mensais, visualizar o resultado do mês e seu histórico de despesas. O aplicativo deverá ter autenticação de usuário e rotas privadas.
+
+![cadastro](https://github.com/eduazzolin/poupai/assets/114076084/1ab8c44f-0579-4f8c-8aae-246c3aa8f13c)⠀⠀
+![despesa](https://github.com/eduazzolin/poupai/assets/114076084/f4810ad5-7474-48c0-b992-6968df47427d)⠀⠀
+![limite](https://github.com/eduazzolin/poupai/assets/114076084/ca367a96-778b-46ce-a576-0b736c367186)⠀⠀
+![home](https://github.com/eduazzolin/poupai/assets/114076084/39833702-e5fc-4e58-badb-3df52cbbcf32)
+
 ### Fluxo de sessão
 - Criar conta (signup)
   - Campos: data de nascimento, nome, email, senha.
